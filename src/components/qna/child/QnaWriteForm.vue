@@ -43,16 +43,10 @@
           ></b-form-textarea>
         </b-form-group>
 
-        <b-button
-          type="submit"
-          variant="primary"
-          class="m-1"
-          v-if="this.type === 'register'"
+        <b-button type="submit" variant="primary" class="m-1" v-if="this.type === 'register'"
           >글작성</b-button
         >
-        <b-button type="submit" variant="primary" class="m-1" v-else
-          >글수정</b-button
-        >
+        <b-button type="submit" variant="primary" class="m-1" v-else>글수정</b-button>
         <b-button type="reset" variant="danger" class="m-1">초기화</b-button>
       </b-form>
     </b-col>
@@ -97,23 +91,16 @@ export default {
       let err = true;
       let msg = "";
       !this.article.user_id &&
-        ((msg = "작성자 입력해주세요"),
-        (err = false),
-        this.$refs.user_id.focus());
+        ((msg = "작성자 입력해주세요"), (err = false), this.$refs.user_id.focus());
       err &&
         !this.article.qnaName &&
-        ((msg = "제목 입력해주세요"),
-        (err = false),
-        this.$refs.qnaName.focus());
+        ((msg = "제목 입력해주세요"), (err = false), this.$refs.qnaName.focus());
       err &&
         !this.article.content &&
-        ((msg = "내용 입력해주세요"),
-        (err = false),
-        this.$refs.content.focus());
+        ((msg = "내용 입력해주세요"), (err = false), this.$refs.content.focus());
 
       if (!err) alert(msg);
-      else
-        this.type === "register" ? this.registArticle() : this.modifyArticle();
+      else this.type === "register" ? this.registArticle() : this.modifyArticle();
     },
     onReset(event) {
       event.preventDefault();
@@ -123,8 +110,12 @@ export default {
       this.$router.push({ name: "QnaList" });
     },
     registArticle() {
+      console.log(this.article.user_id);
+      console.log(this.article.qnaName);
+      console.log(this.article.content);
+
       http
-        .post(`/qna`, {
+        .post(`/qna/`, {
           user_id: this.article.user_id,
           qnaName: this.article.qnaName,
           content: this.article.content,
