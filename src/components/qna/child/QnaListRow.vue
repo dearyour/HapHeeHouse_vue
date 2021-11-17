@@ -9,7 +9,7 @@
     </b-th>
     <b-td>{{ total }}</b-td>
     <b-td>{{ user_id }}</b-td>
-    <b-td>{{ regtime }}</b-td>
+    <b-td>{{ writeDate }}</b-td>
   </b-tr>
 </template>
 
@@ -23,7 +23,7 @@ export default {
     user_id: String,
     qnaName: String,
     total: Number,
-    regtime: String,
+    writeDate: String,
   },
   computed: {
     // changeDateFormat() {
