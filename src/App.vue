@@ -1,22 +1,42 @@
 <template>
   <div id="app">
     <navi-bar />
-    <router-view />
+    <TopNav />
+    <div id="layoutSidenav">
+      <SideNav />
+      <router-view />
+    </div>
+    <DownFooter />
   </div>
 </template>
 
 <script>
 import NaviBar from "./components/layout/NaviBar.vue";
+import DownFooter from "./components/DownFooter.vue";
+import SideNav from "./components/navigation/SideNav.vue";
+import TopNav from "./components/navigation/TopNav.vue";
 
 export default {
   name: "App",
   components: {
     NaviBar,
+    DownFooter,
+    SideNav,
+    TopNav,
   },
 };
 </script>
 
-<style>
+<style lang="scss">
+@import "@/assets/scss/styles.scss";
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
 a:hover {
   text-decoration: none;
   font-weight: bold;

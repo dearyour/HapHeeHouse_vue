@@ -7,9 +7,7 @@
     </b-row>
     <b-row class="mb-1">
       <b-col class="text-right">
-        <b-button variant="outline-primary" @click="moveWrite()"
-          >글쓰기</b-button
-        >
+        <b-button variant="outline-primary" @click="moveWrite()">글쓰기</b-button>
       </b-col>
     </b-row>
     <b-row>
@@ -26,11 +24,7 @@
           </b-thead>
           <tbody>
             <!-- 하위 component인 ListRow에 데이터 전달(props) -->
-            <Qna-list-row
-              v-for="(article, index) in articles"
-              :key="index"
-              v-bind="article"
-            />
+            <Qna-list-row v-for="(article, index) in articles" :key="index" v-bind="article" />
           </tbody>
         </b-table-simple>
       </b-col>
