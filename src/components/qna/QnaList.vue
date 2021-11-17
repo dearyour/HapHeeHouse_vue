@@ -48,7 +48,7 @@ export default {
     };
   },
   created() {
-    http.get(`/qna`).then(({ data }) => {
+    http.get(`/qna/`).then(({ data }) => {
       this.articles = data;
       console.log(data);
     });

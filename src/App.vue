@@ -2,9 +2,13 @@
   <div id="app">
     <navi-bar />
     <TopNav />
-    <div id="layoutSidenav">
-      <SideNav />
-      <router-view />
+    <div class="row">
+      <div id="layoutSidenav" style="width: 20%">
+        <SideNav />
+      </div>
+      <div style="width: 80%">
+        <router-view />
+      </div>
     </div>
     <DownFooter />
   </div>

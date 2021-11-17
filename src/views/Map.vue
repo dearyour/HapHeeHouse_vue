@@ -5,26 +5,33 @@
         <div class="m-3">
           시도 :
           <select v-model="sido" @change="changeSido">
-            <option value="0">
-              {{ sido }}
+            <option v-for="(option, index) in sidoOptions" v-bind:value="option.value" :key="index">
+              {{ option.text }}
             </option>
           </select>
           구군 :
           <select v-model="gugun" @change="changeGugun">
-            <option value="0">{{ gugun }}</option>
+            <option
+              v-for="(option, index) in gugunOptions"
+              v-bind:value="option.value"
+              :key="index"
+            >
+              {{ option.text }}
+            </option>
           </select>
           읍면동 :
           <select v-model="dong" @change="changeDong">
-            <option value="0">{{ dong }}</option>
+            <option v-for="(option, index) in dongOptions" v-bind:value="option.value" :key="index">
+              {{ option.text }}
+            </option>
           </select>
         </div>
         <hr />
         <div class="row m-3">
-          <h3 id="subject">전국 아파트 매매 현황</h3>
-          <div class="mr-3" style="overflow: scroll; width: 20%; height: 500px">
-            <SearchResult />
+          <div style="overflow: scroll; width: 20%; height: 500px">
+            <SearchResult :result="aptResult" />
           </div>
-          <div class="mr-3 ml-3" style="width: 80%">
+          <div style="width: 80%">
             <KakaoMap />
           </div>
         </div>
@@ -48,6 +55,8 @@ export default {
       gugunOptions: [],
       dong: "선택",
       dongOptions: [],
+      aptResult: [],
+      places: [],
     };
   },
   components: {
@@ -62,35 +71,56 @@ export default {
           "Content-Type": "application/json;charset=utf-8",
         },
       })
-      .then((data) => {
-        console.log(data);
-        // $.each(data, function (index, vo) {
-        //  v-for="option in SidoOptions" v-bind:value="option.value" :key="option.text"
-        // });
+      .then(({ data }) => {
+        const list = [];
+        data.forEach(function (ele) {
+          list.push({ text: ele.sidoName, value: ele.sidoCode });
+        });
+        this.sidoOptions = list;
       });
   },
   methods: {
-    aptSearch() {
-      if (this.dong === "선택") {
-        axios
-          .get(`http://127.0.0.1:8080/vue/map/apt-gugun?gugun=${this.gugun}`)
-          .then(({ data }) => {
-            console.log(data);
-          });
-      } else {
-        axios.get(`http://127.0.0.1:8080/vue/map/apt?dong=${this.dong}`).then(({ data }) => {
-          console.log(data);
-        });
-      }
-    },
     changeSido() {
-      console.log(this.sido);
+      axios
+        .get(`http://127.0.0.1:8080/vue/map/gugun?sido=${this.sido}`, {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json;charset=utf-8",
+          },
+        })
+        .then(({ data }) => {
+          const list = [];
+          data.forEach(function (ele) {
+            list.push({ text: ele.gugunName, value: ele.gugunCode });
+          });
+          this.gugunOptions = list;
+        });
     },
     changeGugun() {
-      console.log(this.gugun);
+      axios
+        .get(`http://127.0.0.1:8080/vue/map/dong?gugun=${this.gugun}`, {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json;charset=utf-8",
+          },
+        })
+        .then(({ data }) => {
+          const list = [];
+          data.forEach(function (ele) {
+            list.push({ text: ele.dongName, value: ele.dongCode });
+          });
+          this.dongOptions = list;
+        });
     },
     changeDong() {
-      console.log(this.dong);
+      axios.get(`http://127.0.0.1:8080/vue/map/apt?dong=${this.dong}`).then(({ data }) => {
+        this.aptResult = data;
+        const list = [];
+        data.forEach(function (ele) {
+          list.push({ text: ele.dongName, value: ele.dongCode });
+        });
+        this.places = list;
+      });
     },
   },
 };

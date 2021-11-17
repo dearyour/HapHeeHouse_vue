@@ -6,11 +6,15 @@
 
 <script>
 export default {
+  name: "KakaoMap",
+  props: {
+    places: Array,
+  },
   data() {
     return {
       map: null,
-      markers: [],
       infowindow: null,
+      markers: [],
     };
   },
   mounted() {
@@ -24,6 +28,54 @@ export default {
         "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=2d21dcba471c972f7b405f5f6aac4135";
       document.head.appendChild(script);
     }
+  },
+  computed: {
+    displayMarkers() {
+      var fragment = document.createDocumentFragment();
+      var bounds = new kakao.maps.LatLngBounds();
+
+      // 지도에 표시되고 있는 마커를 제거합니다
+      this.removeMarker();
+
+      for (var i = 0; i < this.places.length; i++) {
+        var placePosition = new kakao.maps.LatLng(this.places[i].lat, this.places[i].lng);
+        var marker = this.addMarker(placePosition, i);
+        var itemEl = this.getListItem(i, this.places[i]); // 검색 결과 항목 Element를 생성합니다
+
+        // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+        // LatLngBounds 객체에 좌표를 추가합니다
+        bounds.extend(placePosition);
+        // 마커와 검색결과 항목에 mouseover 했을때
+        // 해당 장소에 인포윈도우에 장소명을 표시합니다
+        // mouseout 했을 때는 인포윈도우를 닫습니다
+        (function (marker, title, code, place) {
+          kakao.maps.event.addListener(marker, "click", function () {
+            this.displayInfowindow(marker, title, place);
+            console.log(title + " " + code);
+          });
+
+          // kakao.maps.event.addListener(map, "click", function () {
+          //   console.log(customOverlay);
+          //   customOverlay.setMap(null);
+          // });
+
+          itemEl.onmouseover = function () {
+            this.displayInfowindow(marker, title);
+          };
+
+          // itemEl.onmouseout = function () {
+          //   customOverlay.setMap(null);
+          // };
+        })(marker, this.places[i].aptName, this.places[i].aptCode, this.places[i]);
+
+        fragment.appendChild(itemEl);
+      }
+      // 마커를 생성하고 지도에 표시합니다
+
+      // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+      this.map.setBounds(bounds);
+      return this.map;
+    },
   },
   methods: {
     initMap() {
@@ -53,51 +105,6 @@ export default {
       return el;
     },
     //검색 결과 목록과 마커를 표출하는 함수입니다
-    displayMarkers(places) {
-      var fragment = document.createDocumentFragment();
-      var bounds = new kakao.maps.LatLngBounds();
-
-      // 지도에 표시되고 있는 마커를 제거합니다
-      this.removeMarker();
-
-      for (var i = 0; i < places.length; i++) {
-        var placePosition = new kakao.maps.LatLng(places[i].lat, places[i].lng);
-        var marker = this.addMarker(placePosition, i);
-        var itemEl = this.getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
-
-        // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
-        // LatLngBounds 객체에 좌표를 추가합니다
-        bounds.extend(placePosition);
-        // 마커와 검색결과 항목에 mouseover 했을때
-        // 해당 장소에 인포윈도우에 장소명을 표시합니다
-        // mouseout 했을 때는 인포윈도우를 닫습니다
-        (function (marker, title, code, place) {
-          kakao.maps.event.addListener(marker, "click", function () {
-            this.displayInfowindow(marker, title, place);
-            console.log(title + " " + code);
-          });
-
-          // kakao.maps.event.addListener(map, "click", function () {
-          //   console.log(customOverlay);
-          //   customOverlay.setMap(null);
-          // });
-
-          itemEl.onmouseover = function () {
-            this.displayInfowindow(marker, title);
-          };
-
-          // itemEl.onmouseout = function () {
-          //   customOverlay.setMap(null);
-          // };
-        })(marker, places[i].aptName, places[i].aptCode, places[i]);
-
-        fragment.appendChild(itemEl);
-      }
-      // 마커를 생성하고 지도에 표시합니다
-
-      // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
-      this.map.setBounds(bounds);
-    },
     addMarker(position, idx) {
       var imageSrc =
           "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png", // 마커 이미지 url, 스프라이트 이미지를 씁니다
