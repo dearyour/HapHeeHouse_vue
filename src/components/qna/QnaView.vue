@@ -10,16 +10,10 @@
         <b-button variant="outline-primary" @click="listArticle">목록</b-button>
       </b-col>
       <b-col class="text-right">
-        <b-button
-          variant="outline-info"
-          size="sm"
-          @click="moveModifyArticle"
-          class="mr-2"
+        <b-button variant="outline-info" size="sm" @click="moveModifyArticle" class="mr-2"
           >글수정</b-button
         >
-        <b-button variant="outline-danger" size="sm" @click="deleteArticle"
-          >글삭제</b-button
-        >
+        <b-button variant="outline-danger" size="sm" @click="deleteArticle">글삭제</b-button>
       </b-col>
     </b-row>
     <b-row class="mb-1">
@@ -37,7 +31,7 @@
         </b-card>
       </b-col>
     </b-row>
-  <!--댓글 입력 -->
+    <!--댓글 입력 -->
     <b-row class="mb-1">
       <b-col style="text-align: left">
         <b-form @submit="onSubmit" @reset="onReset">
@@ -66,16 +60,10 @@
             ></b-form-textarea>
           </b-form-group>
 
-          <b-button
-            type="submit"
-            variant="primary"
-            class="m-1"
-            v-if="this.type === 'register'"
+          <b-button type="submit" variant="primary" class="m-1" v-if="this.type === 'register'"
             >댓글작성</b-button
           >
-          <b-button type="submit" variant="primary" class="m-1" v-else
-            >댓글수정</b-button
-          >
+          <b-button type="submit" variant="primary" class="m-1" v-else>댓글수정</b-button>
         </b-form>
       </b-col>
     </b-row>
@@ -94,8 +82,7 @@ export default {
   },
   computed: {
     message() {
-      if (this.article.content)
-        return this.article.content.split("\n").join("<br>");
+      if (this.article.content) return this.article.content.split("\n").join("<br>");
       return "";
     },
     // changeDateFormat() {
@@ -114,19 +101,25 @@ export default {
       this.$router.push({ name: "QnaList" });
     },
     moveModifyArticle() {
-      this.$router.replace({
+      this.$router.push({
         name: "QnaUpdate",
         params: { qnaNo: this.article.qnaNo },
       });
-      //   this.$router.push({ path: `/board/modify/${this.article.qnaNo}` });
+      // this.$router.push({ path: `/qna/modify/${this.article.qnaNo}` });
     },
     deleteArticle() {
-      if (confirm("정말로 삭제?")) {
+      if (confirm("삭제하시겠습니까?")) {
         this.$router.replace({
           name: "QnaDelete",
           params: { qnaNo: this.article.qnaNo },
         });
       }
+    },
+    onSubmit() {
+      console.log("submit");
+    },
+    onReset() {
+      console.log("reset");
     },
   },
 };

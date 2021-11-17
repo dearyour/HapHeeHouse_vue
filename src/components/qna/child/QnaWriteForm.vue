@@ -85,8 +85,8 @@ export default {
     }
   },
   methods: {
-    onSubmit(event) {
-      event.preventDefault();
+    onSubmit() {
+      // event.preventDefault();
 
       let err = true;
       let msg = "";
@@ -99,6 +99,7 @@ export default {
         !this.article.content &&
         ((msg = "내용 입력해주세요"), (err = false), this.$refs.content.focus());
 
+      console.log("submit " + this.type);
       if (!err) alert(msg);
       else this.type === "register" ? this.registArticle() : this.modifyArticle();
     },
@@ -127,8 +128,7 @@ export default {
     },
     modifyArticle() {
       http
-        .put(`/qna`, {
-          qnaNo: this.article.qnaNo,
+        .put(`/qna/${this.article.qnaNo}`, {
           user_id: this.article.user_id,
           qnaName: this.article.qnaName,
           content: this.article.content,
