@@ -26,7 +26,7 @@
       <b-col>
         <b-card
           :header-html="`<h3>${article.qnaNo}.
-          ${article.qnaName} [${article.total}]</h3><div><h6>${article.userid}</div><div>${article.regtime}</h6></div>`"
+          ${article.qnaName} [${article.total}]</h3><div><h6>${article.user_id}</div><div>${article.writeDate}</h6></div>`"
           class="mb-2"
           border-variant="dark"
           no-body

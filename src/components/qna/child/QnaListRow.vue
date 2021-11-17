@@ -2,10 +2,9 @@
   <b-tr>
     <b-td>{{ qnaNo }}</b-td>
     <b-th class="text-left">
-      <router-link
-        :to="{ name: 'QnaView', params: { qnaNo: qnaNo } }"
-        >{{ qnaName }}</router-link
-      >
+      <router-link :to="{ name: 'QnaView', params: { qnaNo: qnaNo } }">{{
+        qnaName
+      }}</router-link>
     </b-th>
     <b-td>{{ total }}</b-td>
     <b-td>{{ user_id }}</b-td>

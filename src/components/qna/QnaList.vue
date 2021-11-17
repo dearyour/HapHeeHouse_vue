@@ -24,7 +24,7 @@
           </b-thead>
           <tbody>
             <!-- 하위 component인 ListRow에 데이터 전달(props) -->
-            <Qna-list-row v-for="(article, index) in articles" :key="index" v-bind="article" />
+            <qna-list-row v-for="(article, index) in articles" :key="index" v-bind="article" />
           </tbody>
         </b-table-simple>
       </b-col>

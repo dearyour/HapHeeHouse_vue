@@ -5,7 +5,7 @@
         <b-alert show><h3>글수정</h3></b-alert>
       </b-col>
     </b-row>
-    <Qna-write-form type="modify" />
+    <qna-write-form type="modify" />
   </b-container>
 </template>
 

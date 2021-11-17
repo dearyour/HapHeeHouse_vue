@@ -5,7 +5,7 @@
         <b-alert show><h3>글작성</h3></b-alert>
       </b-col>
     </b-row>
-    <Qna-write-form type="register" />
+    <qna-write-form type="register" />
   </b-container>
 </template>
 
