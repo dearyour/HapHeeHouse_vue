@@ -135,7 +135,7 @@ export default {
         })
         .then(({ data }) => {
           let msg = "수정 처리시 문제가 발생했습니다.";
-          if (data === "success") {
+          if (data === 1) {
             msg = "수정이 완료되었습니다.";
           }
           alert(msg);

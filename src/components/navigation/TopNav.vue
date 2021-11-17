@@ -1,7 +1,7 @@
 <template>
   <div>
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-      <!-- Navbar Brand--><a class="navbar-brand ps-3" href="index.html">Start Bootstrap</a>
+      <!-- Navbar Brand--><router-link :to="{ name: 'Home' }">HappyHouse</router-link>
 
       <!-- Sidebar Toggle-->
 
@@ -33,37 +33,51 @@
 
       <!-- Navbar-->
 
-      <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-        <li class="nav-item dropdown">
-          <a
-            class="nav-link dropdown-toggle"
-            id="navbarDropdown"
-            href="#"
-            role="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-            ><i class="fas fa-user fa-fw"></i
-          ></a>
-
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="#!">Settings</a></li>
-
-            <li><a class="dropdown-item" href="#!">Activity Log</a></li>
-
-            <li>
-              <hr class="dropdown-divider" />
-            </li>
-
-            <li><a class="dropdown-item" href="#!">Logout</a></li>
-          </ul>
-        </li>
-      </ul>
+      <b-navbar-nav class="ml-auto">
+        <b-nav-item-dropdown right>
+          <template #button-content>
+            <b-icon icon="people" font-scale="2"></b-icon>
+          </template>
+          <div v-if="loginCheck">
+            <b-dropdown-item href="#"
+              ><router-link :to="{ name: 'SignUp' }" class="link"
+                ><b-icon icon="person-circle"></b-icon> 회원가입</router-link
+              ></b-dropdown-item
+            >
+            <b-dropdown-item href="#"
+              ><router-link :to="{ name: 'SignIn' }" class="link"
+                ><b-icon icon="key"></b-icon> 로그인</router-link
+              ></b-dropdown-item
+            >
+          </div>
+          <div v-else>
+            <b-dropdown-item href="#"
+              ><router-link :to="{ name: 'SignOut' }" class="link"
+                ><b-icon icon="key"></b-icon> 로그아웃</router-link
+              ></b-dropdown-item
+            >
+          </div>
+        </b-nav-item-dropdown>
+      </b-navbar-nav>
     </nav>
   </div>
 </template>
 
 <script>
-export default {};
+import http from "@/util/http-common";
+export default {
+  data() {
+    return {
+      loginCheck: false,
+    };
+  },
+  created() {
+    http.get(`/user/login-check`).then(({ data }) => {
+      if (data === 1) this.loginCheck = false;
+      else this.loginCheck = true;
+    });
+  },
+};
 </script>
 
 <style scoped></style>

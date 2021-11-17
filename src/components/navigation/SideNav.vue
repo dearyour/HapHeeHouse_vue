@@ -5,11 +5,12 @@
         <div class="nav">
           <div class="sb-sidenav-menu-heading">Core</div>
 
-          <a class="nav-link" href="index.html">
-            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-            Dashboard</a
+          <router-link :to="{ name: 'Home' }" class="link"
+            ><b-icon icon="house" font-scale="1"></b-icon> HOME</router-link
           >
-
+          <router-link :to="{ name: 'Qna' }" class="link"
+            ><b-icon icon="journal" font-scale="1"></b-icon> 게시판</router-link
+          >
           <div class="sb-sidenav-menu-heading">Interface</div>
 
           <a

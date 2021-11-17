@@ -32,18 +32,8 @@
                 @keyup.enter="confirm"
               ></b-form-input>
             </b-form-group>
-            <b-button
-              type="button"
-              variant="primary"
-              class="m-1"
-              @click="confirm"
-              >로그인</b-button
-            >
-            <b-button
-              type="button"
-              variant="success"
-              class="m-1"
-              @click="movePage"
+            <b-button type="button" variant="primary" class="m-1" @click="confirm">로그인</b-button>
+            <b-button type="button" variant="success" class="m-1" @click="movePage"
               >회원가입</b-button
             >
           </b-form>
@@ -55,6 +45,8 @@
 </template>
 
 <script>
+import http from "@/util/http-common";
+
 export default {
   name: "MemberLogin",
   data() {
@@ -68,10 +60,26 @@ export default {
   },
   methods: {
     confirm() {
-      alert("로그인!!!");
+      http
+        .post(`/user/login`, {
+          user_id: this.user.userid,
+          password: this.user.userpwd,
+        })
+        .then(({ data }) => {
+          if (data === 1) {
+            alert("로그인에 성공하였습니다.");
+            this.moveList();
+          } else {
+            alert("로그인에 실패하였습니다.");
+            this.movePage();
+          }
+        });
     },
     movePage() {
-      this.$router.push({ name: "SignUp" });
+      this.$router.push({ name: "SignIn" });
+    },
+    moveList() {
+      this.$router.push({ name: "QnaList" });
     },
   },
 };
