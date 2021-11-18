@@ -3,15 +3,15 @@
       <b-col style="text-align: left">
         <b-form @submit="onSubmit" @reset="onReset">
           <b-form-group
-            id="user_id-group"
+            id="userid-group"
             label="작성자:"
-            label-for="user_id"
+            label-for="userid"
             description="작성자를 입력하세요."
           >
             <b-form-input
-              id="user_id"
-              :disabled="isuser_id"
-              v-model="article.user_id"
+              id="userid"
+              :disabled="isuserid"
+              v-model="article.userid"
               type="text"
               required
               placeholder="작성자 입력..."
@@ -20,8 +20,8 @@
 
           <b-form-group id="replyContent-group" label="내용:" label-for="replyContent">
             <b-form-textarea
-              id="replyreplyContent"
-              v-model="article.replyreplyContent"
+              id="replyContent"
+              v-model="article.replyContent"
               placeholder="내용 입력..."
               type="text"
             ></b-form-textarea>
@@ -51,10 +51,10 @@ export default {
     return {
       article: {
         qnaNo: 0,
-        user_id: "",
+        userid: "",
         replyreplyContent: "",
       },
-      isuser_id: false,
+      isuserid: false,
     };
   },
   props: {
@@ -64,7 +64,7 @@ export default {
     if (this.type === "modify") {
       http.get(`/qna/reply/${this.$route.params.qnaNo}`).then(({ data }) => {
         // this.article.qnaNo = data.article.qnaNo;
-        // this.article.user_id = data.article.user_id;
+        // this.article.userid = data.article.userid;
         // this.article.qnaName = data.article.qnaName;
         // this.article.replyContent = data.article.replyContent;
         this.article = data;
@@ -78,8 +78,8 @@ export default {
 
       let err = true;
       let msg = "";
-      !this.article.user_id &&
-        ((msg = "작성자 입력해주세요"), (err = false), this.$refs.user_id.focus());
+      !this.article.userid &&
+        ((msg = "작성자 입력해주세요"), (err = false), this.$refs.userid.focus());
       err &&
         !this.article.replyContent &&
         ((msg = "내용 입력해주세요"), (err = false), this.$refs.replyContent.focus());
@@ -91,7 +91,7 @@ export default {
     registArticle() {
       http
         .post(`/qna/`, {
-          user_id: this.article.user_id,
+          userid: this.article.userid,
           replyContent: this.article.replyContent,
         })
         .then(({ data }) => {
@@ -107,7 +107,7 @@ export default {
       http
         .put(`/qna/reply`, {
           qnaNo: this.article.qnaNo,
-          user_id: this.article.user_id,
+          userid: this.article.userid,
           replyContent: this.article.replyContent,
         })
         .then(({ data }) => {

@@ -7,7 +7,7 @@
       }}</router-link>
     </b-th>
     <b-td>{{ total }}</b-td>
-    <b-td>{{ user_id }}</b-td>
+    <b-td>{{ userid }}</b-td>
     <b-td>{{ writeDate }}</b-td>
   </b-tr>
 </template>
@@ -19,7 +19,7 @@ export default {
   name: "QnaListRow",
   props: {
     qnaNo: Number,
-    user_id: String,
+    userid: String,
     qnaName: String,
     total: Number,
     writeDate: String,

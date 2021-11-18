@@ -32,8 +32,18 @@
                 @keyup.enter="confirm"
               ></b-form-input>
             </b-form-group>
-            <b-button type="button" variant="primary" class="m-1" @click="confirm">로그인</b-button>
-            <b-button type="button" variant="success" class="m-1" @click="movePage"
+            <b-button
+              type="button"
+              variant="primary"
+              class="m-1"
+              @click="confirm"
+              >로그인</b-button
+            >
+            <b-button
+              type="button"
+              variant="success"
+              class="m-1"
+              @click="movePage"
               >회원가입</b-button
             >
           </b-form>
@@ -45,41 +55,35 @@
 </template>
 
 <script>
-import http from "@/util/http-common";
+import { mapState, mapActions } from "vuex";
+
+const memberStore = "memberStore";
 
 export default {
   name: "MemberLogin",
   data() {
     return {
-      isLoginError: false,
       user: {
-        userid: "",
-        userpwd: "",
+        userid: null,
+        userpwd: null,
       },
     };
   },
+  computed: {
+    ...mapState(memberStore, ["isLogin", "isLoginError"]),
+  },
   methods: {
-    confirm() {
-      http
-        .post(`/user/login`, {
-          user_id: this.user.userid,
-          password: this.user.userpwd,
-        })
-        .then(({ data }) => {
-          if (data === 1) {
-            alert("로그인에 성공하였습니다.");
-            this.moveList();
-          } else {
-            alert("로그인에 실패하였습니다.");
-            this.movePage();
-          }
-        });
+    ...mapActions(memberStore, ["userConfirm", "getUserInfo"]),
+    async confirm() {
+      await this.userConfirm(this.user);
+      let token = sessionStorage.getItem("access-token");
+      if (this.isLogin) {
+        await this.getUserInfo(token);
+        this.$router.push({ name: "Map" });
+      }
     },
     movePage() {
-      this.$router.push({ name: "SignIn" });
-    },
-    moveList() {
-      this.$router.push({ name: "QnaList" });
+      this.$router.push({ name: "SignUp" });
     },
   },
 };

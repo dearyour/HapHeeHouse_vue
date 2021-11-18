@@ -3,8 +3,8 @@
     <b-row class="mb-1">
       <b-col>
         <b-card
-          :header-html="`<h3>${article.user_id}.
-          ${article.replyUserId} </h3><div><h6>${article.replyContent}</div><div>${article.replyDatetime}</h6></div>`"
+          :header-html="`<h3>${article.userid}.
+          ${article.replyUserid} </h3><div><h6>${article.replyContent}</div><div>${article.replyDatetime}</h6></div>`"
           class="mb-2"
           border-variant="dark"
           no-body
@@ -42,7 +42,7 @@ export default {
     // },
   },
   created() {
-    http.get(`/qna/${this.$route.params.replyUserId}`).then(({ data }) => {
+    http.get(`/qna/${this.$route.params.replyUserid}`).then(({ data }) => {
       this.article = data;
     });
   },
@@ -53,7 +53,7 @@ export default {
     moveModifyArticle() {
       this.$router.replace({
         name: "QnaUpdate",
-        params: { replyUserId: this.article.replyUserId },
+        params: { replyUserid: this.article.replyUserid },
       });
       //   this.$router.push({ path: `/board/modify/${this.article.qnaNo}` });
     },
@@ -61,7 +61,7 @@ export default {
       if (confirm("정말로 삭제?")) {
         this.$router.replace({
           name: "QnaDelete",
-          params: { replyUserId: this.article.replyUserId },
+          params: { replyUserid: this.article.replyUserid },
         });
       }
     },

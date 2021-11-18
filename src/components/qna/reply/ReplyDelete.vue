@@ -17,7 +17,7 @@ import http from "@/util/http-common";
 export default {
   name: "QnaDelete",
   created() {
-    http.delete(`/qna/reply/${this.$route.params.replyUserId}`).then(({ data }) => {
+    http.delete(`/qna/reply/${this.$route.params.replyUserid}`).then(({ data }) => {
       let msg = "삭제 처리시 문제가 발생했습니다.";
       if (data === "1") {
         msg = "삭제가 완료되었습니다.";
