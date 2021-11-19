@@ -20,7 +20,7 @@
       <b-col>
         <b-card
           :header-html="`<h3>${article.qnaNo}.
-          ${article.qnaName} [${article.total}]</h3><div><h6>${article.user_id}</div><div>${article.writeDate}</h6></div>`"
+          ${article.qnaName} [${article.total}]</h3><div><h6>${article.userid}</div><div>${article.writeDate}</h6></div>`"
           class="mb-2"
           border-variant="dark"
           no-body
@@ -36,15 +36,15 @@
       <b-col style="text-align: left">
         <b-form @submit="onSubmit" @reset="onReset">
           <b-form-group
-            id="user_id-group"
+            id="userid-group"
             label="작성자:"
-            label-for="user_id"
+            label-for="userid"
             description="작성자를 입력하세요."
           >
             <b-form-input
               id="user_id"
-              :disabled="isuser_id"
-              v-model="article.user_id"
+              :disabled="isuserid"
+              v-model="article.userid"
               type="text"
               required
               placeholder="작성자 입력..."

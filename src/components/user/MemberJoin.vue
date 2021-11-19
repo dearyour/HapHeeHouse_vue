@@ -95,8 +95,8 @@ export default {
     onSubmit() {
       http
         .post(`/user/join`, {
-          user_id: this.user.userid,
-          password: this.user.userpwd,
+          userid: this.user.userid,
+          userpwd: this.user.userpwd,
           name: this.user.name,
           email: this.user.email,
           address: this.user.address,
