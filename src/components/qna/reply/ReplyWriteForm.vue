@@ -1,45 +1,39 @@
 <template>
   <b-row class="mb-1">
-      <b-col style="text-align: left">
-        <b-form @submit="onSubmit" @reset="onReset">
-          <b-form-group
-            id="user_id-group"
-            label="작성자:"
-            label-for="user_id"
-            description="작성자를 입력하세요."
-          >
-            <b-form-input
-              id="user_id"
-              :disabled="isuser_id"
-              v-model="article.user_id"
-              type="text"
-              required
-              placeholder="작성자 입력..."
-            ></b-form-input>
-          </b-form-group>
+    <b-col style="text-align: left">
+      <b-form @submit="onSubmit" @reset="onReset">
+        <b-form-group
+          id="user_id-group"
+          label="작성자:"
+          label-for="user_id"
+          description="작성자를 입력하세요."
+        >
+          <b-form-input
+            id="user_id"
+            :disabled="isuser_id"
+            v-model="article.user_id"
+            type="text"
+            required
+            placeholder="작성자 입력..."
+          ></b-form-input>
+        </b-form-group>
 
-          <b-form-group id="replyContent-group" label="내용:" label-for="replyContent">
-            <b-form-textarea
-              id="replyreplyContent"
-              v-model="article.replyreplyContent"
-              placeholder="내용 입력..."
-              type="text"
-            ></b-form-textarea>
-          </b-form-group>
+        <b-form-group id="replyContent-group" label="내용:" label-for="replyContent">
+          <b-form-textarea
+            id="replyreplyContent"
+            v-model="article.replyreplyContent"
+            placeholder="내용 입력..."
+            type="text"
+          ></b-form-textarea>
+        </b-form-group>
 
-          <b-button
-            type="submit"
-            variant="primary"
-            class="m-1"
-            v-if="this.type === 'register'"
-            >댓글작성</b-button
-          >
-          <b-button type="submit" variant="primary" class="m-1" v-else
-            >댓글수정</b-button
-          >
-        </b-form>
-      </b-col>
-    </b-row>
+        <b-button type="submit" variant="primary" class="m-1" v-if="this.type === 'register'"
+          >댓글작성</b-button
+        >
+        <b-button type="submit" variant="primary" class="m-1" v-else>댓글수정</b-button>
+      </b-form>
+    </b-col>
+  </b-row>
 </template>
 
 <script>
@@ -87,11 +81,10 @@ export default {
       if (!err) alert(msg);
       else this.type === "register" ? this.registArticle() : this.modifyArticle();
     },
-    
+
     registArticle() {
       http
-        .post(`/qna/`, {
-          user_id: this.article.user_id,
+        .post(`/qna/reply/${this.article.qnaNo}`, {
           replyContent: this.article.replyContent,
         })
         .then(({ data }) => {
@@ -127,6 +120,4 @@ export default {
 };
 </script>
 
-<style>
-
-</style>
+<style></style>
