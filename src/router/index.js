@@ -14,6 +14,7 @@ import QnaView from "@/components/qna/QnaView.vue";
 import QnaUpdate from "@/components/qna/QnaUpdate.vue";
 import QnaDelete from "@/components/qna/QnaDelete.vue";
 
+import DetailView from "@/views/DetailView.vue";
 
 import store from "@/store/index.js";
 Vue.use(VueRouter);
@@ -98,6 +99,11 @@ const routes = [
         component: QnaView,
       },
     ],
+  },
+  {
+    path: "/deal/apt",
+    name: "DetailView",
+    component: DetailView,
   },
 ];
 
