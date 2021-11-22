@@ -19,14 +19,14 @@
         </b-form-group>
 
         <b-form-group
-          id="qnaName-group"
+          id="subject-group"
           label="제목:"
-          label-for="qnaName"
+          label-for="subject"
           description="제목을 입력하세요."
         >
           <b-form-input
-            id="qnaName"
-            v-model="article.qnaName"
+            id="subject"
+            v-model="article.subject"
             type="text"
             required
             placeholder="제목 입력..."
@@ -43,10 +43,16 @@
           ></b-form-textarea>
         </b-form-group>
 
-        <b-button type="submit" variant="primary" class="m-1" v-if="this.type === 'register'"
+        <b-button
+          type="submit"
+          variant="primary"
+          class="m-1"
+          v-if="this.type === 'register'"
           >글작성</b-button
         >
-        <b-button type="submit" variant="primary" class="m-1" v-else>글수정</b-button>
+        <b-button type="submit" variant="primary" class="m-1" v-else
+          >글수정</b-button
+        >
         <b-button type="reset" variant="danger" class="m-1">초기화</b-button>
       </b-form>
     </b-col>
@@ -61,9 +67,9 @@ export default {
   data() {
     return {
       article: {
-        qnaNo: 0,
+        articleno: 0,
         userid: "",
-        qnaName: "",
+        subject: "",
         content: "",
       },
       isuserid: false,
@@ -74,7 +80,7 @@ export default {
   },
   created() {
     if (this.type === "modify") {
-      http.get(`/qna/${this.$route.params.qnaNo}`).then(({ data }) => {
+      http.get(`/qna/${this.$route.params.articleno}`).then(({ data }) => {
         // this.article.qnaNo = data.article.qnaNo;
         // this.article.userid = data.article.userid;
         // this.article.qnaName = data.article.qnaName;
@@ -91,22 +97,29 @@ export default {
       let err = true;
       let msg = "";
       !this.article.userid &&
-        ((msg = "작성자 입력해주세요"), (err = false), this.$refs.userid.focus());
+        ((msg = "작성자 입력해주세요"),
+        (err = false),
+        this.$refs.userid.focus());
       err &&
-        !this.article.qnaName &&
-        ((msg = "제목 입력해주세요"), (err = false), this.$refs.qnaName.focus());
+        !this.article.subject &&
+        ((msg = "제목 입력해주세요"),
+        (err = false),
+        this.$refs.subject.focus());
       err &&
         !this.article.content &&
-        ((msg = "내용 입력해주세요"), (err = false), this.$refs.content.focus());
+        ((msg = "내용 입력해주세요"),
+        (err = false),
+        this.$refs.content.focus());
 
       console.log("submit " + this.type);
       if (!err) alert(msg);
-      else this.type === "register" ? this.registArticle() : this.modifyArticle();
+      else
+        this.type === "register" ? this.registArticle() : this.modifyArticle();
     },
     onReset(event) {
       event.preventDefault();
-      this.article.qnaNo = 0;
-      this.article.qnaName = "";
+      this.article.articleno = 0;
+      this.article.subject = "";
       this.article.content = "";
       this.$router.push({ name: "QnaList" });
     },
@@ -114,12 +127,12 @@ export default {
       http
         .post(`/qna/`, {
           userid: this.article.userid,
-          qnaName: this.article.qnaName,
+          subject: this.article.subject,
           content: this.article.content,
         })
         .then(({ data }) => {
           let msg = "등록 처리시 문제가 발생했습니다.";
-          if (data === 1) {
+          if (data === "success") {
             msg = "등록이 완료되었습니다.";
           }
           alert(msg);
@@ -128,14 +141,14 @@ export default {
     },
     modifyArticle() {
       http
-        .put(`/qna/${this.article.qnaNo}`, {
+        .put(`/qna/${this.article.articleno}`, {
           userid: this.article.userid,
-          qnaName: this.article.qnaName,
+          subject: this.article.subject,
           content: this.article.content,
         })
         .then(({ data }) => {
           let msg = "수정 처리시 문제가 발생했습니다.";
-          if (data === 1) {
+          if (data === "success") {
             msg = "수정이 완료되었습니다.";
           }
           alert(msg);

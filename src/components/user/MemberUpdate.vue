@@ -5,17 +5,17 @@
         <b-alert show><h3>글수정</h3></b-alert>
       </b-col>
     </b-row>
-    <qna-write-form type="modify" />
+    <member-join type="modify" />
   </b-container>
 </template>
 
 <script>
-import ReplyWriteForm from "./reply/ReplyWriteForm.vue";
+import MemberJoin from "./user/MemberJoin.vue";
 
 export default {
-  name: "ReplyUpdate",
+  name: "MemberUpdate",
   components: {
-    ReplyWriteForm,
+    MemberJoin,
   },
 };
 </script>

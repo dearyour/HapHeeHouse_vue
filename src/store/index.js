@@ -5,6 +5,7 @@ import createPersistedState from "vuex-persistedstate";
 Vue.use(Vuex);
 
 import memberStore from "@/store/modules/memberStore.js";
+import commentStore from "@/store/modules/commentStore.js";
 import Constant from "@/util/Constant.js";
 import http from "@/util/http-common.js";
 
@@ -138,6 +139,7 @@ const store = new Vuex.Store({
   },
   modules: {
     memberStore,
+    commentStore,
   },
   plugins: [
     createPersistedState({

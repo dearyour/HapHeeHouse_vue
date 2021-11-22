@@ -25,9 +25,7 @@
             <b-row>
               <b-col cols="2"></b-col>
               <b-col cols="2" align-self="end">이름</b-col
-              ><b-col cols="4" align-self="start">{{
-                userInfo.name
-              }}</b-col>
+              ><b-col cols="4" align-self="start">{{ userInfo.name }}</b-col>
               <b-col cols="2"></b-col>
             </b-row>
             <b-row>
@@ -39,15 +37,15 @@
             <b-row>
               <b-col cols="2"></b-col>
               <b-col cols="2" align-self="end">주소</b-col
-              ><b-col cols="4" align-self="start">{{
-                userInfo.address
-              }}</b-col>
+              ><b-col cols="4" align-self="start">{{ userInfo.address }}</b-col>
               <b-col cols="2"></b-col>
             </b-row>
           </b-container>
           <hr class="my-4" />
 
-          <b-button variant="primary" href="#" class="mr-1">정보수정</b-button>
+          <b-button variant="primary" @click="moveJoin()" class="mr-1"
+            >정보수정</b-button
+          >
           <b-button variant="danger" href="#">회원탈퇴</b-button>
         </b-jumbotron>
       </b-col>
@@ -66,6 +64,11 @@ export default {
   components: {},
   computed: {
     ...mapState(memberStore, ["userInfo"]),
+  },
+  methods: {
+    moveJoin() {
+      this.$router.push({ name: "SignUp" });
+    },
   },
 };
 </script>

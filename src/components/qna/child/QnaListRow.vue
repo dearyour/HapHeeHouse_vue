@@ -1,14 +1,15 @@
 <template>
   <b-tr>
-    <b-td>{{ qnaNo }}</b-td>
+    <b-td>{{ articleno }}</b-td>
     <b-th class="text-left">
-      <router-link :to="{ name: 'QnaView', params: { qnaNo: qnaNo } }">{{
-        qnaName
-      }}</router-link>
+      <router-link
+        :to="{ name: 'QnaView', params: { articleno: articleno } }"
+        >{{ subject }}</router-link
+      >
     </b-th>
-    <b-td>{{ total }}</b-td>
+    <b-td>{{ hit }}</b-td>
     <b-td>{{ userid }}</b-td>
-    <b-td>{{ writeDate }}</b-td>
+    <b-td>{{ regtime }}</b-td>
   </b-tr>
 </template>
 
@@ -18,11 +19,11 @@
 export default {
   name: "QnaListRow",
   props: {
-    qnaNo: Number,
+    articleno: Number,
     userid: String,
-    qnaName: String,
-    total: Number,
-    writeDate: String,
+    subject: String,
+    hit: Number,
+    regtime: String,
   },
   computed: {
     // changeDateFormat() {
