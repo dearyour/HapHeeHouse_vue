@@ -39,7 +39,6 @@
     </b-row>
 
     <!-- 도서정보 상세보기 Component -->
-    <view-detail :book="book" />
     <comment-write :articleno="this.articleno" />
     <comment-write
       v-if="isModifyShow && this.modifyComment != null"
@@ -56,16 +55,24 @@
 </template>
 
 <script>
-// import moment from "moment";
 import http from "@/util/http-common";
+import CommentWrite from "@/components/qna/comment/CommentWrite.vue";
+import Comment from "@/components/qna/comment/Comment.vue";
+import { mapGetters } from "vuex";
+const commentStore = "commentStore";
 
 export default {
+  name: "QnaView",
   data() {
     return {
       article: {},
+      articleno: "",
+      isModifyShow: false,
+      modifyComment: Object,
     };
   },
   computed: {
+    ...mapGetters(commentStore, ["article", "comments"]),
     message() {
       if (this.article.content)
         return this.article.content.split("\n").join("<br>");
@@ -77,11 +84,22 @@ export default {
     //   );
     // },
   },
+  components: {
+    CommentWrite,
+    Comment,
+  },
   created() {
+    this.articleno = this.$route.params.articleno;
     http.get(`/qna/${this.$route.params.articleno}`).then(({ data }) => {
       this.article = data;
     });
+    // 도서 정보 얻기.
+    // this.$store.dispatch("getBook", `/qna/${this.articleno}`);
+
+    // 도서평(댓글) 얻기.
+    this.$store.dispatch("getComments", `/comment/${this.articleno}`);
   },
+
   methods: {
     listArticle() {
       this.$router.push({ name: "QnaList" });
@@ -100,6 +118,13 @@ export default {
           params: { articleno: this.article.articleno },
         });
       }
+    },
+    onModifyComment(comment) {
+      this.modifyComment = comment;
+      this.isModifyShow = true;
+    },
+    onModifyCommentCancel(isShow) {
+      this.isModifyShow = isShow;
     },
   },
 };

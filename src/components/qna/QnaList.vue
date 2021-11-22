@@ -42,7 +42,8 @@
 <script>
 import http from "@/util/http-common";
 import QnaListRow from "@/components/qna/child/QnaListRow";
-
+// import { mapGetters } from "vuex";
+// const commentStore = "commentStore";
 export default {
   name: "QnaList",
   components: {
@@ -53,10 +54,14 @@ export default {
       articles: [],
     };
   },
+  computed: {
+    // ...mapGetters(commentStore, ["articles"]),
+  },
   created() {
     http.get(`/qna`).then(({ data }) => {
       this.articles = data;
     });
+    // this.$store.dispatch("getArticles");
   },
   methods: {
     moveWrite() {

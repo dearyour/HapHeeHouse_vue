@@ -20,11 +20,11 @@ const commentStore = {
   mutations: {
     setArticles(state, payload) {
       // state의 books에 서버에서 얻어온 도서목록 세팅.
-      state.books = payload;
+      state.articles = payload;
     },
     setArticle(state, payload) {
       // state의 book에 서버에서 얻어온 도서정보 세팅.
-      state.book = payload;
+      state.article = payload;
     },
     setComments(state, payload) {
       // state의 comments에 서버에서 얻어온 도서평 목록 세팅.
