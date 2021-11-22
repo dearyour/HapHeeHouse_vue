@@ -21,6 +21,15 @@
           :fields="fields"
           @row-clicked="viewArticle"
         >
+          <template #cell(subject)="data">
+            <router-link
+              :to="{
+                name: 'BoardView',
+                params: { articleno: data.item.articleno },
+              }"
+              >{{ data.item.subject }}</router-link
+            >
+          </template>
         </b-table>
       </b-col>
     </b-row>
@@ -32,35 +41,35 @@ import http from "@/util/http-common";
 // import BoardListRow from "@/components/board/BoardListRow";
 
 export default {
-  name: "QnaList",
+  name: "BoardList",
   components: {
-    // QnaListRow,
+    // BoardListRow,
   },
   data() {
     return {
       articles: [],
       fields: [
-        { key: "qna_id", label: "글번호", tdClass: "tdClass" },
-        { key: "qna_name", label: "제목", tdClass: "tdqna_name" },
+        { key: "articleno", label: "글번호", tdClass: "tdClass" },
+        { key: "subject", label: "제목", tdClass: "tdSubject" },
         { key: "userid", label: "작성자", tdClass: "tdClass" },
         { key: "regtime", label: "작성일", tdClass: "tdClass" },
-        { key: "total", label: "조회수", tdClass: "tdClass" },
+        { key: "hit", label: "조회수", tdClass: "tdClass" },
       ],
     };
   },
   created() {
-    http.get(`/qna`).then(({ data }) => {
+    http.get(`/board`).then(({ data }) => {
       this.articles = data;
     });
   },
   methods: {
     moveWrite() {
-      this.$router.push({ name: "QnaWrite" });
+      this.$router.push({ name: "BoardWrite" });
     },
     viewArticle(article) {
       this.$router.push({
-        name: "QnaView",
-        params: { qna_id: article.qna_id },
+        name: "BoardView",
+        params: { articleno: article.articleno },
       });
     },
   },
@@ -72,7 +81,7 @@ export default {
   width: 50px;
   text-align: center;
 }
-.tdqna_name {
+.tdSubject {
   width: 300px;
   text-align: left;
 }

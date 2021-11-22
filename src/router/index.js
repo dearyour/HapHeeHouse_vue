@@ -67,6 +67,37 @@ const routes = [
       },
     ],
   },
+  // {
+  //   name: "qna",
+  //   path: "/qna",
+  //   component: Qna,
+  //   redirect: "/qna/list",
+  //   children: [
+  //     {
+  //       path: "list",
+  //       name: "BookList",
+  //       component: () => import("@/components/qna/BookList.vue"),
+  //     },
+  //     {
+  //       path: "write",
+  //       name: "book-create",
+  //       component: () => import("@/components/qna/BookCreate.vue"),
+  //     },
+  //     {
+  //       path: "view",
+  //       name: "book-view",
+  //       component: () => import("@/components/qna/BookView.vue"),
+  //     },
+  //     {
+  //       path: "modify/:isbn",
+  //       name: "book-modify",
+  //       component: () => import("@/components/qna/BookModify.vue"),
+  //     },
+  //   ],
+  // redirect: () => {
+  //   return "/qna";
+  // },
+  // },
   {
     path: "/qna",
     name: "Qna",

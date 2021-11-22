@@ -10,7 +10,7 @@
         >
           <b-form-input
             id="userid"
-            :disabled="isuserid"
+            :disabled="isUserid"
             v-model="article.userid"
             type="text"
             required
@@ -63,7 +63,7 @@
 import http from "@/util/http-common";
 
 export default {
-  name: "QnaWriteForm",
+  name: "QnariteForm",
   data() {
     return {
       article: {
@@ -72,7 +72,7 @@ export default {
         subject: "",
         content: "",
       },
-      isuserid: false,
+      isUserid: false,
     };
   },
   props: {
@@ -81,18 +81,18 @@ export default {
   created() {
     if (this.type === "modify") {
       http.get(`/qna/${this.$route.params.articleno}`).then(({ data }) => {
-        // this.article.qnaNo = data.article.qnaNo;
+        // this.article.articleno = data.article.articleno;
         // this.article.userid = data.article.userid;
-        // this.article.qnaName = data.article.qnaName;
+        // this.article.subject = data.article.subject;
         // this.article.content = data.article.content;
         this.article = data;
       });
-      this.isuserid = true;
+      this.isUserid = true;
     }
   },
   methods: {
-    onSubmit() {
-      // event.preventDefault();
+    onSubmit(event) {
+      event.preventDefault();
 
       let err = true;
       let msg = "";
@@ -111,7 +111,6 @@ export default {
         (err = false),
         this.$refs.content.focus());
 
-      console.log("submit " + this.type);
       if (!err) alert(msg);
       else
         this.type === "register" ? this.registArticle() : this.modifyArticle();
@@ -121,11 +120,11 @@ export default {
       this.article.articleno = 0;
       this.article.subject = "";
       this.article.content = "";
-      this.$router.push({ name: "QnaList" });
+      this.$router.push({ name: "BoardList" });
     },
     registArticle() {
       http
-        .post(`/qna/`, {
+        .post(`/qna`, {
           userid: this.article.userid,
           subject: this.article.subject,
           content: this.article.content,
@@ -141,7 +140,8 @@ export default {
     },
     modifyArticle() {
       http
-        .put(`/qna/${this.article.articleno}`, {
+        .put(`/qna`, {
+          articleno: this.article.articleno,
           userid: this.article.userid,
           subject: this.article.subject,
           content: this.article.content,

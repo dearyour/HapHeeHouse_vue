@@ -37,9 +37,10 @@
         </b-card>
       </b-col>
     </b-row>
-    <!--reply-->
-    <!-- <view-detail :article="article" />
-    <comment-write :article="this.article.articleno" />
+
+    <!-- 도서정보 상세보기 Component -->
+    <view-detail :book="book" />
+    <comment-write :articleno="this.articleno" />
     <comment-write
       v-if="isModifyShow && this.modifyComment != null"
       :modifyComment="this.modifyComment"
@@ -50,30 +51,19 @@
       :key="index"
       :comment="comment"
       @modify-comment="onModifyComment"
-    /> -->
+    />
   </b-container>
 </template>
 
 <script>
 // import moment from "moment";
 import http from "@/util/http-common";
-// import CommentWrite from "@/components/qna/CommentWrite.vue";
-// import Comment from "@/components/qna/Comment.vue";
-import { mapGetters } from "vuex";
-
-const commentStore = "commentStore";
 
 export default {
   data() {
     return {
       article: {},
-      isModifyShow: false,
-      modifyComment: Object,
     };
-  },
-  components: {
-    // CommentWrite,
-    // Comment,
   },
   computed: {
     message() {
@@ -81,7 +71,6 @@ export default {
         return this.article.content.split("\n").join("<br>");
       return "";
     },
-    ...mapGetters(commentStore, ["article", "comments"]),
     // changeDateFormat() {
     //   return moment(new Date(this.article.regtime)).format(
     //     "YYYY.MM.DD hh:mm:ss"
@@ -89,14 +78,9 @@ export default {
     // },
   },
   created() {
-    this.articleno = this.$route.params.articleno;
-
     http.get(`/qna/${this.$route.params.articleno}`).then(({ data }) => {
       this.article = data;
     });
-
-    // 도서평(댓글) 얻기.
-    this.$store.dispatch("getComments", `/comment/${this.articleno}`);
   },
   methods: {
     listArticle() {
@@ -107,7 +91,7 @@ export default {
         name: "QnaUpdate",
         params: { articleno: this.article.articleno },
       });
-      //   this.$router.push({ path: `/qna/modify/${this.article.articleno}` });
+      //   this.$router.push({ path: `/board/modify/${this.article.articleno}` });
     },
     deleteArticle() {
       if (confirm("정말로 삭제?")) {
@@ -116,13 +100,6 @@ export default {
           params: { articleno: this.article.articleno },
         });
       }
-    },
-    onModifyComment(comment) {
-      this.modifyComment = comment;
-      this.isModifyShow = true;
-    },
-    onModifyCommentCancel(isShow) {
-      this.isModifyShow = isShow;
     },
   },
 };

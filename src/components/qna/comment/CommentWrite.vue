@@ -9,31 +9,15 @@
       ></b-form-textarea>
     </b-col>
     <b-col>
-      <b-button variant="outline-info" class="mr-2 h-100" @click="updateComment"
-        >수정</b-button
-      >
-      <b-button
-        variant="outline-danger"
-        class="h-100"
-        @click="updateCommentCancel"
-        >취소</b-button
-      >
+      <b-button variant="outline-info" class="mr-2 h-100" @click="updateComment">수정</b-button>
+      <b-button variant="outline-danger" class="h-100" @click="updateCommentCancel">취소</b-button>
     </b-col>
   </b-row>
   <b-row v-else class="mb-3 mt-2">
     <b-col cols="11">
-      <b-form-textarea
-        id="comment"
-        placeholder="도서평 입력..."
-        v-model="comment"
-        rows="2"
-      ></b-form-textarea>
+      <b-form-textarea id="comment" placeholder="도서평 입력..." v-model="comment" rows="2"></b-form-textarea>
     </b-col>
-    <b-col
-      ><b-button variant="dark" class="h-100" @click="registComment"
-        >등록</b-button
-      ></b-col
-    >
+    <b-col><b-button variant="dark" class="h-100" @click="registComment">등록</b-button></b-col>
   </b-row>
 </template>
 
@@ -45,20 +29,21 @@ export default {
   data() {
     return {
       // 차후 작성자 이름은 로그인 구현후 로그인한 사용자로 바꾼다.
-      comment: "",
+      user_name: "안효인",
+      comment: ""
     };
   },
   props: {
-    articleno: { type: Number },
-    modifyComment: { type: Object },
+    isbn: { type: String },
+    modifyComment: { type: Object }
   },
   methods: {
     registComment() {
       http
         .post("/comment/", {
-          userid: this.userid,
+          user_name: this.user_name,
           comment: this.comment,
-          articleno: this.articleno,
+          isbn: this.isbn
         })
         .then(({ data }) => {
           let msg = "등록 처리시 문제가 발생했습니다.";
@@ -71,14 +56,14 @@ export default {
           this.comment = "";
 
           // 도서평(댓글) 얻기.
-          this.$store.dispatch("getComments", `/comment/${this.articleno}`);
+          this.$store.dispatch("getComments", `/comment/${this.isbn}`);
         });
     },
     updateComment() {
       http
         .put(`/comment`, {
-          isbn: this.modifyComment.isbn,
-          comment: this.modifyComment.comment,
+          comment_no: this.modifyComment.comment_no,
+          comment: this.modifyComment.comment
         })
         .then(({ data }) => {
           let msg = "수정 처리시 문제가 발생했습니다.";
@@ -88,20 +73,13 @@ export default {
           alert(msg);
 
           // 도서평(댓글) 얻기.
-          this.$store.dispatch(
-            "getComments",
-            `/comment/${this.modifyComment.articleno}`
-          );
-          this.$store.dispatch(
-            "getComments",
-            `/comment/${this.modifyComment.isbn}`
-          );
+          this.$store.dispatch("getComments", `/comment/${this.modifyComment.isbn}`);
           this.$emit("modify-comment-cancel", false);
         });
     },
     updateCommentCancel() {
       this.$emit("modify-comment-cancel", false);
-    },
-  },
+    }
+  }
 };
 </script>

@@ -7,7 +7,9 @@
     </b-row>
     <b-row class="mb-1">
       <b-col class="text-right">
-        <b-button variant="outline-primary" @click="moveWrite()">글쓰기</b-button>
+        <b-button variant="outline-primary" @click="moveWrite()"
+          >글쓰기</b-button
+        >
       </b-col>
     </b-row>
     <b-row>
@@ -24,7 +26,11 @@
           </b-thead>
           <tbody>
             <!-- 하위 component인 ListRow에 데이터 전달(props) -->
-            <qna-list-row v-for="(article, index) in articles" :key="index" v-bind="article" />
+            <qna-list-row
+              v-for="(article, index) in articles"
+              :key="index"
+              v-bind="article"
+            />
           </tbody>
         </b-table-simple>
       </b-col>
@@ -48,9 +54,8 @@ export default {
     };
   },
   created() {
-    http.get(`/qna/`).then(({ data }) => {
+    http.get(`/qna`).then(({ data }) => {
       this.articles = data;
-      console.log(data);
     });
   },
   methods: {
@@ -66,7 +71,7 @@ export default {
   width: 50px;
   text-align: center;
 }
-.tdqna_name {
+.tdSubject {
   width: 300px;
   text-align: left;
 }
