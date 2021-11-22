@@ -3,12 +3,12 @@
     <section id="index_section">
       <div>
         <b-tabs content-class="mt-3">
-          <b-tab title="First" active><search-location /></b-tab>
-          <b-tab title="Second"><p>I'm the second tab</p></b-tab>
-          <b-tab title="Disabled" disabled><p>I'm a disabled tab!</p></b-tab>
+          <b-tab title="아파트" active><search-location /></b-tab>
+          <b-tab title="단독/다가구"><search-location /></b-tab>
+          <b-tab title="오피스텔"><search-location /></b-tab>
         </b-tabs>
       </div>
-      <div class="card" style="min-height: 650px">
+      <div class="card mt-3">
         <div class="row m-3">
           <div style="overflow: scroll; width: 20%; height: 500px">
             <SearchResult />

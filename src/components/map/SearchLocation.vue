@@ -159,6 +159,8 @@ export default {
           dong: this.dong,
           minArea: this.minArea,
           maxArea: this.maxArea,
+          minAmount: this.minAmount,
+          maxAmount: this.maxAmount,
         })
         .then(() => {
           console.log("AptOptions 데이터 load 완료");

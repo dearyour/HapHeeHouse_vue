@@ -1,13 +1,8 @@
 <template>
   <div id="app">
     <TopNav />
-    <div class="row">
-      <div id="layoutSidenav" style="width: 20%">
-        <SideNav />
-      </div>
-      <div style="width: 80%">
-        <router-view />
-      </div>
+    <div class="p-3">
+      <router-view />
     </div>
     <DownFooter />
   </div>
@@ -15,14 +10,12 @@
 
 <script>
 import DownFooter from "./components/DownFooter.vue";
-import SideNav from "./components/navigation/SideNav.vue";
 import TopNav from "./components/navigation/TopNav.vue";
 
 export default {
   name: "App",
   components: {
     DownFooter,
-    SideNav,
     TopNav,
   },
 };
@@ -43,6 +36,6 @@ a:hover {
 }
 
 a.router-link-exact-active {
-  color: #42b983;
+  color: white;
 }
 </style>

@@ -18,6 +18,8 @@ const store = new Vuex.Store({
     dongOptions: [],
     minArea: 0,
     maxArea: 70,
+    minAmount: 0,
+    maxAmount: 10000000,
     aptResult: [],
     places: [],
   },
@@ -126,7 +128,9 @@ const store = new Vuex.Store({
     },
     [Constant.GET_APT](context, payload) {
       return http
-        .get(`/map/apt?dong=${payload.dong}&minArea=${payload.minArea}&maxArea=${payload.maxArea}`)
+        .get(
+          `/map/apt?dong=${payload.dong}&minArea=${payload.minArea}&maxArea=${payload.maxArea}&minAmount=${payload.minAmount}&maxAmount=${payload.maxAmount}`
+        )
         .then(({ data }) => {
           context.commit(Constant.SET_APT, data);
         });
