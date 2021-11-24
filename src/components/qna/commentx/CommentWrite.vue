@@ -40,35 +40,32 @@
 <script>
 import http from "@/util/http-common";
 import { mapState } from "vuex";
-import { mapActions } from "vuex";
 const memberStore = "memberStore";
-const commentStore = "commentStore";
 export default {
-  name: "commnetwrite",
+  name: "commentwrite",
   data() {
     return {
       // 차후 작성자 이름은 로그인 구현후 로그인한 사용자로 바꾼다.
-      userid: "",
+      // userid: "",
       comment: "",
     };
   },
   props: {
     articleno: { type: Number },
     modifyComment: { type: Object },
+    userid: { type: String },
   },
-  mounted() {
-    this.getComments(`/comment/${this.$route.params.articleno}`);
-  },
+  // created: {
+  //   userid: this.userInfo.userid,
+  // },
   computed: {
     ...mapState(memberStore, ["userInfo"]),
   },
   methods: {
-    ...mapActions(commentStore, ["getComments"]),
-
     // ...mapActions(commentStore, ["getComments"]),
     registComment() {
       http
-        .post("/comment/", {
+        .post("/comment", {
           userid: this.userInfo.userid,
           comment: this.comment,
           articleno: this.articleno,
@@ -90,15 +87,12 @@ export default {
           // );
           // this[("getComments", `/comment/${this.$route.params.articleno}`)]();
 
-          this.$store.dispatch(
-            "commentStore/getComments",
-            `/comment/${this.$route.params.articleno}`
-          );
+          this.$store.dispatch("getComments", `/comment/${this.articleno}`);
         });
     },
     updateComment() {
       http
-        .put(`/comment/${this.comment.isbn}}`, {
+        .put(`/comment`, {
           isbn: this.modifyComment.isbn,
           comment: this.modifyComment.comment,
         })
@@ -112,7 +106,7 @@ export default {
           // 도서평(댓글) 얻기.
           this.$store.dispatch(
             "getComments",
-            `/comment/${this.$route.params.modifyComment.articleno}`
+            `/comment/${this.modifyComment.articleno}`
           );
           this.$emit("modify-comment-cancel", false);
         });

@@ -21,8 +21,7 @@
 
 <script>
 import http from "@/util/http-common";
-import { mapActions } from "vuex";
-const commentStore = "commentStore";
+
 export default {
   name: "comment",
   props: {
@@ -30,7 +29,6 @@ export default {
     comment: Object,
   },
   methods: {
-    ...mapActions(commentStore, ["getComments"]),
     modifyCommentView() {
       // 상위 component의 modify-comment인 event listener에 전달.
       this.$emit("modify-comment", {
@@ -40,7 +38,7 @@ export default {
       });
     },
     deleteComment() {
-      if (confirm("정말로 삭제하시겠습니까??")) {
+      if (confirm("정말로 삭제?")) {
         // 서버로 삭제할 도서평번호를 전달.
         http.delete(`/comment/${this.comment.isbn}`).then(({ data }) => {
           let msg = "삭제 처리시 문제가 발생했습니다.";
@@ -50,8 +48,8 @@ export default {
           alert(msg);
           // 도서평(댓글) 얻기.
           this.$store.dispatch(
-            "commentStore/getComments",
-            `/comment/${this.$route.params.articleno}`
+            "getComments",
+            `/comment/${this.comment.articleno}`
           );
         });
       }

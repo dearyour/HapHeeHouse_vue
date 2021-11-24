@@ -61,6 +61,9 @@
 
 <script>
 import http from "@/util/http-common";
+import { mapState } from "vuex";
+
+const memberStore = "memberStore";
 
 export default {
   name: "QnariteForm",
@@ -78,17 +81,21 @@ export default {
   props: {
     type: { type: String },
   },
+  computed: {
+    ...mapState(memberStore, ["userInfo"]),
+  },
   created() {
-    if (this.type === "modify") {
-      http.get(`/qna/${this.$route.params.articleno}`).then(({ data }) => {
-        // this.article.articleno = data.article.articleno;
-        // this.article.userid = data.article.userid;
-        // this.article.subject = data.article.subject;
-        // this.article.content = data.article.content;
-        this.article = data;
-      });
-      this.isUserid = true;
-    }
+    this.article.userid = this.userInfo.userid;
+    // if (this.type === "modify") {
+    http.get(`/qna/${this.$route.params.articleno}`).then(({ data }) => {
+      // this.article.articleno = data.article.articleno;
+      // this.article.userid = data.article.userid;
+      // this.article.subject = data.article.subject;
+      // this.article.content = data.article.content;
+      this.article = data;
+    });
+    this.isUserid = true;
+    // }
   },
   methods: {
     onSubmit(event) {
@@ -120,7 +127,7 @@ export default {
       this.article.articleno = 0;
       this.article.subject = "";
       this.article.content = "";
-      this.$router.push({ name: "BoardList" });
+      this.$router.push({ name: "QnaList" });
     },
     registArticle() {
       http

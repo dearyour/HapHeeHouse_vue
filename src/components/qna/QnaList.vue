@@ -12,6 +12,7 @@
         >
       </b-col>
     </b-row>
+
     <b-row>
       <b-col v-if="articles.length">
         <b-table-simple hover responsive>
@@ -36,32 +37,36 @@
       </b-col>
       <!-- <b-col v-else class="text-center">도서 목록이 없습니다.</b-col> -->
     </b-row>
+    <!-- <b-pagination v-modle="currentPage" :total-rows="rows" :per-page="perPage">
+    </b-pagination> -->
   </b-container>
 </template>
 
 <script>
-import http from "@/util/http-common";
+// import http from "@/util/http-common";
+import { mapGetters, mapState } from "vuex";
 import QnaListRow from "@/components/qna/child/QnaListRow";
 // import { mapGetters } from "vuex";
 // const commentStore = "commentStore";
+const memberStore = "memberStore";
 export default {
   name: "QnaList",
   components: {
     QnaListRow,
   },
   data() {
-    return {
-      articles: [],
-    };
+    return {};
   },
   computed: {
-    // ...mapGetters(commentStore, ["articles"]),
+    ...mapState(memberStore, ["isLogin", "isLoginError"]),
+    // vuex의 getters에 등록된 함수 얻기.
+    ...mapGetters(["articles"]),
   },
   created() {
-    http.get(`/qna`).then(({ data }) => {
-      this.articles = data;
-    });
-    // this.$store.dispatch("getArticles");
+    // http.get(`/qna`).then(({ data }) => {
+    //   this.articles = data;
+    // });
+    this.$store.dispatch("getArticles");
   },
   methods: {
     moveWrite() {

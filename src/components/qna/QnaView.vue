@@ -59,6 +59,8 @@ import http from "@/util/http-common";
 import CommentWrite from "@/components/qna/comment/CommentWrite.vue";
 import Comment from "@/components/qna/comment/Comment.vue";
 import { mapGetters } from "vuex";
+import { mapState } from "vuex";
+const memberStore = "memberStore";
 const commentStore = "commentStore";
 
 export default {
@@ -67,11 +69,13 @@ export default {
     return {
       article: {},
       articleno: "",
+      userid: "",
       isModifyShow: false,
       modifyComment: Object,
     };
   },
   computed: {
+    ...mapState(memberStore, ["userInfo"]),
     ...mapGetters(commentStore, ["article", "comments"]),
     message() {
       if (this.article.content)
@@ -89,12 +93,13 @@ export default {
     Comment,
   },
   created() {
+    this.userid = this.article.userid;
     this.articleno = this.$route.params.articleno;
     http.get(`/qna/${this.$route.params.articleno}`).then(({ data }) => {
       this.article = data;
     });
     // 도서 정보 얻기.
-    // this.$store.dispatch("getBook", `/qna/${this.articleno}`);
+    this.$store.dispatch("getArticle", `/qna/${this.articleno}`);
 
     // 도서평(댓글) 얻기.
     this.$store.dispatch("getComments", `/comment/${this.articleno}`);

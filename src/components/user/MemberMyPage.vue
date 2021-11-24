@@ -46,7 +46,7 @@
           <b-button variant="primary" @click="moveJoin()" class="mr-1"
             >정보수정</b-button
           >
-          <b-button variant="danger" href="#">회원탈퇴</b-button>
+          <b-button variant="danger" @click="deleteDelete()">회원탈퇴</b-button>
         </b-jumbotron>
       </b-col>
       <b-col></b-col>
@@ -67,7 +67,15 @@ export default {
   },
   methods: {
     moveJoin() {
-      this.$router.push({ name: "SignUp" });
+      this.$router.push({ name: "MemberUpdate" });
+    },
+    deleteDelete() {
+      if (confirm("정말로 삭제하시겠습니까?")) {
+        this.$router.replace({
+          name: "UserDelete",
+          params: { userid: this.userInfo.userid },
+        });
+      }
     },
   },
 };

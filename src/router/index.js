@@ -6,6 +6,8 @@ import Member from "@/views/Member.vue";
 import MemberLogin from "@/components/user/MemberLogin.vue";
 import MemberJoin from "@/components/user/MemberJoin.vue";
 import MemberMyPage from "@/components/user/MemberMyPage.vue";
+import MemberUpdate from "@/components/user/MemberUpdate.vue";
+import MemberDelete from "@/components/user/MemberDelete.vue";
 
 import Qna from "@/views/Qna.vue";
 import QnaList from "@/components/qna/QnaList.vue";
@@ -64,6 +66,18 @@ const routes = [
         name: "MyPage",
         beforeEnter: onlyAuthUser,
         component: MemberMyPage,
+      },
+      {
+        path: "memberUpdate",
+        name: "MemberUpdate",
+        beforeEnter: onlyAuthUser,
+        component: MemberUpdate,
+      },
+      {
+        path: "delete",
+        name: "MemberDelete",
+        beforeEnter: onlyAuthUser,
+        component: MemberDelete,
       },
     ],
   },
