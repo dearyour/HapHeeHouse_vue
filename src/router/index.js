@@ -4,10 +4,11 @@ import Map from "@/views/Map.vue";
 
 import Member from "@/views/Member.vue";
 import MemberLogin from "@/components/user/MemberLogin.vue";
-import MemberJoin from "@/components/user/MemberJoin.vue";
+import MemberWrite from "@/components/user/MemberWrite.vue";
 import MemberMyPage from "@/components/user/MemberMyPage.vue";
 import MemberUpdate from "@/components/user/MemberUpdate.vue";
 import MemberDelete from "@/components/user/MemberDelete.vue";
+import MemberFind from "@/components/user/MemberFind.vue";
 
 import Qna from "@/views/Qna.vue";
 import QnaList from "@/components/qna/QnaList.vue";
@@ -58,8 +59,19 @@ const routes = [
       },
       {
         path: "singup",
-        name: "SignUp",
-        component: MemberJoin,
+        name: "MemberWrite",
+        component: MemberWrite,
+      },
+      {
+        path: "find-userId",
+        name: "MemberFind",
+        component: MemberFind,
+      },
+      {
+        path: "update",
+        name: "MemberUpdate",
+        beforeEnter: onlyAuthUser,
+        component: MemberUpdate,
       },
       {
         path: "mypage",
@@ -67,12 +79,7 @@ const routes = [
         beforeEnter: onlyAuthUser,
         component: MemberMyPage,
       },
-      {
-        path: "memberUpdate",
-        name: "MemberUpdate",
-        beforeEnter: onlyAuthUser,
-        component: MemberUpdate,
-      },
+
       {
         path: "delete",
         name: "MemberDelete",

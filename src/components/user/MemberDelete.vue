@@ -13,12 +13,33 @@
 
 <script>
 import http from "@/util/http-common";
+import { mapState } from "vuex";
+
+const memberStore = "memberStore";
 
 export default {
-  name: "QnaDelete",
+  name: "MemberDelete",
+  data() {
+    return {
+      userid: "",
+      userpwd: "",
+    };
+  },
+  computed: {
+    ...mapState(memberStore, ["userInfo"]),
+  },
   created() {
+    console.log(this.userInfo.userid);
+    console.log(this.userInfo.userpwd);
+    console.log(this.userInfo.name);
+    console.log(this.userInfo.email);
+    console.log(this.userInfo.address);
     http
-      .delete(`/user/delete/${this.$route.params.userinfo}`)
+      .delete(`/user/delete`, {
+        data: {
+          userpwd: this.userInfo.userpwd,
+        },
+      })
       .then(({ data }) => {
         let msg = "삭제가 완료되었습니다.";
         if (data === "1") {

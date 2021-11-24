@@ -2,7 +2,7 @@
   <b-container class="bv-example-row mt-3">
     <b-row>
       <b-col>
-        <b-alert variant="secondary" show><h3>회원가입</h3></b-alert>
+        <b-alert variant="secondary" show><h3>회원</h3></b-alert>
       </b-col>
     </b-row>
     <b-form @submit="onSubmit" @reset="onReset">
@@ -19,6 +19,7 @@
         <b-form-input
           id="userid"
           v-model="user.userid"
+          :disabled="isUserid"
           required
           placeholder="아이디 입력...."
           :class="{
@@ -103,7 +104,11 @@
           required
         ></b-form-input>
       </b-form-group>
-      <b-button type="submit" variant="primary">회원가입</b-button>
+      <b-button type="submit" variant="primary" v-if="this.type === 'register'"
+        >회원가입</b-button
+      >
+      <b-button type="submit" variant="primary" v-else>정보수정</b-button>
+
       <b-button type="reset" variant="danger">취소</b-button>
     </b-form>
   </b-container>
@@ -111,7 +116,9 @@
 
 <script>
 import http from "@/util/http-common";
+import { mapState } from "vuex";
 
+const memberStore = "memberStore";
 export default {
   name: "MemberJoin",
   data() {
@@ -124,7 +131,7 @@ export default {
         email: "",
         address: "",
       },
-
+      isUserid: false,
       // focus
       isUserNameFocus: false,
       isUserEmailFocus: false,
@@ -164,6 +171,15 @@ export default {
     isUserPassword2FocusAndInvalid() {
       return this.isUserPassword2Focus && !this.isUserPassword2Valid;
     },
+    ...mapState(memberStore, ["userInfo"]),
+  },
+  props: {
+    type: { type: String },
+  },
+  created() {
+    this.user.userid = this.userInfo.userid;
+    // if (this.type === "modify") {
+    this.isUserid = true;
   },
 
   methods: {
@@ -201,7 +217,11 @@ export default {
     },
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////
-    onSubmit() {
+    onSubmit(event) {
+      event.preventDefault();
+      this.type === "register" ? this.registArticle() : this.modifyArticle();
+    },
+    registArticle() {
       http
         .post(`/user/join`, {
           userid: this.user.userid,
@@ -219,6 +239,29 @@ export default {
           }
         });
     },
+    modifyArticle() {
+      console.log(this.user.userid);
+      console.log(this.user.userpwd);
+      console.log(this.user.name);
+      console.log(this.user.email);
+      console.log(this.user.address);
+      http
+        .put(`/user/update`, {
+          userid: this.user.userid,
+          userpwd: this.user.userpwd,
+          name: this.user.name,
+          email: this.user.email,
+          address: this.user.address,
+        })
+        .then(({ data }) => {
+          if (data === 1) {
+            alert("정보수정에 성공하였습니다.");
+            this.$router.push({ name: "MyPage" });
+          } else {
+            alert("정보수정에 실패하였습니다.");
+          }
+        });
+    },
     onReset(event) {
       event.preventDefault();
       // Reset our form values
@@ -228,6 +271,7 @@ export default {
       this.user.email = "";
       this.user.address = "";
     },
+
     moveLogin() {
       this.$router.push({ name: "SignIn" });
     },

@@ -72,8 +72,8 @@ export default {
     deleteDelete() {
       if (confirm("정말로 삭제하시겠습니까?")) {
         this.$router.replace({
-          name: "UserDelete",
-          params: { userid: this.userInfo.userid },
+          name: "MemberDelete",
+          params: { userid: this.userInfo.userpwd },
         });
       }
     },

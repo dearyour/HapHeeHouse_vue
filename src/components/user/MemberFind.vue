@@ -2,7 +2,7 @@
   <b-container class="bv-example-row mt-3">
     <b-row>
       <b-col>
-        <b-alert variant="secondary" show><h3>로그인</h3></b-alert>
+        <b-alert variant="secondary" show><h3>아이디 찾기</h3></b-alert>
       </b-col>
     </b-row>
     <b-row>
@@ -11,24 +11,24 @@
         <b-card class="text-center mt-3" style="max-width: 40rem" align="left">
           <b-form class="text-left">
             <b-alert show variant="danger" v-if="isLoginError"
-              >아이디 또는 비밀번호를 확인하세요.</b-alert
+              >이름 과 이메일을 입력해주세요.</b-alert
             >
-            <b-form-group label="아이디:" label-for="userid">
+            <b-form-group label="이름:" label-for="name">
               <b-form-input
-                id="userid"
-                v-model="user.userid"
+                id="name"
+                v-model="user.name"
                 required
-                placeholder="아이디 입력...."
+                placeholder="이름 입력...."
                 @keyup.enter="confirm"
               ></b-form-input>
             </b-form-group>
-            <b-form-group label="비밀번호:" label-for="userpwd">
+            <b-form-group label="이메일:" label-for="email">
               <b-form-input
                 type="password"
-                id="userpwd"
-                v-model="user.userpwd"
+                id="email"
+                v-model="user.email"
                 required
-                placeholder="비밀번호 입력...."
+                placeholder="이메일 입력...."
                 @keyup.enter="confirm"
               ></b-form-input>
             </b-form-group>
@@ -37,7 +37,7 @@
               variant="primary"
               class="m-1"
               @click="confirm"
-              >로그인</b-button
+              >로그인 화면으로</b-button
             >
             <b-button
               type="button"
@@ -50,7 +50,7 @@
               type="button"
               variant="success"
               class="m-1"
-              @click="moveFind"
+              @click="registArticle"
               >아이디 찾기</b-button
             >
           </b-form>
@@ -63,16 +63,16 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
-
+import http from "@/util/http-common";
 const memberStore = "memberStore";
 
 export default {
-  name: "MemberLogin",
+  name: "MemberFind",
   data() {
     return {
       user: {
-        userid: null,
-        userpwd: null,
+        name: null,
+        email: null,
       },
     };
   },
@@ -81,13 +81,25 @@ export default {
   },
   methods: {
     ...mapActions(memberStore, ["userConfirm", "getUserInfo"]),
-    async confirm() {
-      await this.userConfirm(this.user);
-      let token = sessionStorage.getItem("access-token");
-      if (this.isLogin) {
-        await this.getUserInfo(token);
-        this.$router.push({ name: "Map" });
-      }
+    registArticle() {
+      http
+        .get(`/user/find-userId`, {
+          name: this.user.name,
+          email: this.user.email,
+        })
+        .then(({ data }) => {
+          if (data === 1) {
+            alert("아이디 찾기에 성공하였습니다.");
+            console.log(data);
+            this.moveLogin();
+          } else {
+            alert("아이디를 찾을 수 없습니다.");
+          }
+        });
+    },
+
+    confirm() {
+      this.$router.push({ name: "SignIn" });
     },
     movePage() {
       this.$router.push({ name: "MemberWrite" });

@@ -65,7 +65,6 @@ export default {
   methods: {
     ...mapActions(commentStore, ["getComments"]),
 
-    // ...mapActions(commentStore, ["getComments"]),
     registComment() {
       http
         .post("/comment/", {
