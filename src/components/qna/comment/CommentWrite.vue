@@ -97,10 +97,12 @@ export default {
         });
     },
     updateComment() {
+      console.log(this.modifyComment);
+      console.log(this.modifyComment.isbn);
       http
-        .put(`/comment/${this.comment.isbn}}`, {
-          isbn: this.modifyComment.isbn,
+        .put(`/comment/${this.modifyComment.isbn}`, {
           comment: this.modifyComment.comment,
+          isbn: this.modifyComment.isbn,
         })
         .then(({ data }) => {
           let msg = "수정 처리시 문제가 발생했습니다.";
@@ -111,8 +113,8 @@ export default {
 
           // 도서평(댓글) 얻기.
           this.$store.dispatch(
-            "getComments",
-            `/comment/${this.$route.params.modifyComment.articleno}`
+            "commentStore/getComments",
+            `/comment/${this.$route.params.articleno}`
           );
           this.$emit("modify-comment-cancel", false);
         });
