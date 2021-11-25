@@ -14,10 +14,10 @@
           <div style="overflow: scroll; width: 20%; height: 500px">
             <SearchResult />
           </div>
-          <div style="width: 20%">
+          <div style="width: 20%; height: 500px">
             <DetailResult />
           </div>
-          <div v-bind:style="`width:` + size">
+          <div style="width: 60%">
             <KakaoMap />
           </div>
         </div>
@@ -35,11 +35,6 @@ import DetailResult from "@/components/deal/DetailResult.vue";
 
 export default {
   name: "Map",
-  data() {
-    return {
-      size: "80%",
-    };
-  },
   created() {
     this.$store.commit(Constant.SET_HOUSE_TYPE, "apartment");
   },
@@ -61,10 +56,6 @@ export default {
   methods: {
     changeHouseType(type) {
       this.$store.commit(Constant.SET_HOUSE_TYPE, type);
-    },
-    changeSize() {
-      if (this.isDetailResultOpen === false) this.size = "80%";
-      else this.size = "60%";
     },
   },
 };

@@ -2,6 +2,7 @@ export default {
   GET_SIDO_OPTIONS: "getSidoOptions",
   GET_GUGUN_OPTIONS: "getGugunOptions",
   GET_DONG_OPTIONS: "getDongOptions",
+  GET_HOUSE_DEAL: "getHouseDeal",
   GET_HOUSE: "getHouse",
   GET_RENT_NOT_APT: "getRentNotApt",
   SET_SIDO_OPTIONS: "setSidoOptions",
@@ -16,6 +17,6 @@ export default {
   SET_MIN_AMOUNT: "setMinAmount",
   SET_MAX_AMOUNT: "setMaxAmount",
   SET_HOUSE_TYPE: "setHouseType",
-  SET_APT_DEAL: "setAptDeal",
+  SET_HOUSE_DEAL: "setHouseDeal",
   SET_DEAL_TYPE: "setDealType",
 };

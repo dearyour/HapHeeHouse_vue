@@ -31,6 +31,7 @@ const store = new Vuex.Store({
     isDetailResultOpen: false,
     houseType: "apartment",
     dealType: "deal",
+    history: [],
   },
   getters: {
     sido: (state) => {
@@ -93,6 +94,9 @@ const store = new Vuex.Store({
     dealType: (state) => {
       return state.dealType;
     },
+    history: (state) => {
+      return state.history;
+    },
   },
   mutations: {
     [Constant.SET_SIDO_OPTIONS](state, payload) {
@@ -145,8 +149,9 @@ const store = new Vuex.Store({
       state.isOk = true;
       state.isDetailResultOpen = false;
     },
-    [Constant.SET_APT_DEAL](state, payload) {
+    [Constant.SET_HOUSE_DEAL](state, payload) {
       state.aptDeal = payload;
+      console.log(state.aptDeal);
       state.isDetailResultOpen = true;
     },
     [Constant.SET_HOUSE_TYPE](state, payload) {
@@ -156,7 +161,9 @@ const store = new Vuex.Store({
     [Constant.SET_DEAL_TYPE](state, payload) {
       state.dealType = payload;
     },
-
+    [Constant.SET_HISTORY](state, payload) {
+      state.history = payload;
+    },
     setArticles(state, payload) {
       // state의 books에 서버에서 얻어온 도서목록 세팅.
       state.articles = payload;
@@ -195,15 +202,14 @@ const store = new Vuex.Store({
           context.commit(Constant.SET_HOUSE, data);
         });
     },
-    [Constant.GET_APT_DEAL](context, payload) {
-      console.log(payload);
-      return http
-        .get(`/deal/${context.state.houseType}?aptCode=${payload.aptCode}`)
-        .then(({ data }) => {
-          context.commit(Constant.SET_APT_DEAL, data);
-        });
+    [Constant.GET_HOUSE_DEAL](context, payload) {
+      return http.get(`/history/${context.state.dealType}?aptCode=${payload}`).then(({ data }) => {
+        context.commit(Constant.SET_HOUSE_DEAL, data);
+      });
     },
-
+    // [Constant.GET_HISTORY](context, payload) {
+    //   return http.get(``)
+    // },
     // 서버에서 도서목록을 얻고 mutation의 setBooks를 호출한다.
     getArticles(context) {
       http

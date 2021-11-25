@@ -9,8 +9,8 @@
       <div>{{ vo.dongName }} {{ vo.jibun }}</div>
       <div>{{ vo.buildYear }}</div>
       <div style="color: red">{{ vo.recentPrice }}</div>
+      <hr align="center" style="width: 80%" />
     </div>
-    <hr align="center" style="width: 80%" />
   </div>
 </template>
 
@@ -28,7 +28,8 @@ export default {
   },
   methods: {
     getAptDeal(aptCode) {
-      this.$store.dispatch(Constant.GET_APT_DEAL, aptCode).then(() => {
+      console.log("getHouseDeal " + aptCode);
+      this.$store.dispatch(Constant.GET_HOUSE_DEAL, aptCode).then(() => {
         console.log("aptData를 가지고 왔습니다..!");
       });
     },
