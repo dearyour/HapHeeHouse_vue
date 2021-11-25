@@ -22,41 +22,66 @@
     </b-row>
     <b-row>
       <b-col>
-        <b-form-input
-          id="minArea"
-          type="number"
-          v-model="minArea"
-          @change="getApt"
-          @keyup.enter="getApt"
-        />
+        <b-row class="mt-3 ml-3">
+          면적
+          <b-col>
+            <b-form-input
+              id="minArea"
+              type="number"
+              size="sm"
+              v-model="minArea"
+              @change="getApt"
+              @keyup.enter="getApt"
+            />
+          </b-col>
+          <b-col>
+            <b-form-input
+              id="maxArea"
+              type="number"
+              size="sm"
+              v-model="maxArea"
+              @change="getApt"
+              @keyup.enter="getApt"
+            />
+          </b-col>
+        </b-row>
       </b-col>
       <b-col>
-        <b-form-input
-          id="maxArea"
-          type="number"
-          v-model="maxArea"
-          @change="getApt"
-          @keyup.enter="getApt"
-        />
+        <b-row class="mt-3 ml-3 mr-3">
+          비용
+          <b-col>
+            <b-form-input
+              id="minAmount"
+              type="number"
+              size="sm"
+              v-model="minAmount"
+              @change="getApt"
+              @keyup.enter="getApt"
+            />
+          </b-col>
+          <b-col>
+            <b-form-input
+              id="maxAmount"
+              type="number"
+              size="sm"
+              v-model="maxAmount"
+              @change="getApt"
+              @keyup.enter="getApt"
+            />
+          </b-col>
+        </b-row>
       </b-col>
-      <b-col>
-        <b-form-input
-          id="minAmount"
-          type="number"
-          v-model="minAmount"
-          @change="getApt"
-          @keyup.enter="getApt"
-        />
-      </b-col>
-      <b-col>
-        <b-form-input
-          id="maxAmount"
-          type="number"
-          v-model="maxAmount"
-          @change="getApt"
-          @keyup.enter="getApt"
-        />
-      </b-col>
+    </b-row>
+    <b-row>
+      <b-form-radio-group
+        v-model="dealType"
+        :options="options"
+        class="mb-3"
+        value-field="item"
+        text-field="name"
+        disabled-field="notEnabled"
+        @change="getApt"
+      ></b-form-radio-group>
     </b-row>
   </div>
 </template>
@@ -65,6 +90,14 @@
 import Constant from "@/util/Constant.js";
 export default {
   name: "SearchLocation",
+  data() {
+    return {
+      options: [
+        { item: "deal", name: "매매" },
+        { item: "rent", name: "전월세" },
+      ],
+    };
+  },
   computed: {
     sido: {
       get() {
@@ -131,31 +164,42 @@ export default {
         this.$store.commit(Constant.SET_MAX_AMOUNT, value);
       },
     },
+    dealType: {
+      get() {
+        return this.$store.getters.dealType;
+      },
+      set(value) {
+        this.$store.commit(Constant.SET_DEAL_TYPE, value);
+      },
+    },
   },
   created() {
     this.$store
       .dispatch(Constant.GET_SIDO_OPTIONS)
       .then(() => {
-        console.log("sidoOptions 데이터 load 완료");
+        // console.log("sidoOptions 데이터 load 완료");
       })
       .catch((error) => alert(`처리 중 문제가 발생하였습니다.${error}`));
   },
   methods: {
     changeSido() {
-      console.log("changeSido event " + this.sido);
+      // console.log("changeSido event " + this.sido);
       this.$store.dispatch(Constant.GET_GUGUN_OPTIONS, this.sido).then(() => {
-        console.log("gugunOptions 데이터 load 완료");
+        // console.log("gugunOptions 데이터 load 완료");
       });
     },
     changeGugun() {
       this.$store.dispatch(Constant.GET_DONG_OPTIONS, this.gugun).then(() => {
-        console.log("gugunOptions 데이터 load 완료");
+        // console.log("gugunOptions 데이터 load 완료");
       });
     },
     getApt() {
-      console.log("dong: " + this.dong);
+      if (this.dong === "0") {
+        alert("동을 선택하세요");
+        return;
+      }
       this.$store
-        .dispatch(Constant.GET_APT, {
+        .dispatch(Constant.GET_HOUSE, {
           dong: this.dong,
           minArea: this.minArea,
           maxArea: this.maxArea,
@@ -163,7 +207,7 @@ export default {
           maxAmount: this.maxAmount,
         })
         .then(() => {
-          console.log("AptOptions 데이터 load 완료");
+          // console.log("AptOptions 데이터 load 완료");
         });
     },
   },

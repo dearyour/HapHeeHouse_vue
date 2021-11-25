@@ -22,11 +22,15 @@ const store = new Vuex.Store({
     minAmount: 0,
     maxAmount: 10000000,
     aptResult: [],
+    aptDeal: [],
     places: [],
-
     articles: [],
     article: null,
     comments: [],
+    isOk: false,
+    isDetailResultOpen: false,
+    houseType: "apartment",
+    dealType: "deal",
   },
   getters: {
     sido: (state) => {
@@ -62,7 +66,6 @@ const store = new Vuex.Store({
     aptResult: (state) => {
       return state.aptResult;
     },
-
     articles(state) {
       // 도서목록
       return state.articles;
@@ -74,6 +77,21 @@ const store = new Vuex.Store({
     comments(state) {
       // 도서평 목록
       return state.comments;
+    },
+    aptDeal: (state) => {
+      return state.aptDeal;
+    },
+    isOk: (state) => {
+      return state.isOk;
+    },
+    isDetailResultOpen: (state) => {
+      return state.isDetailResultOpen;
+    },
+    houseType: (state) => {
+      return state.houseType;
+    },
+    dealType: (state) => {
+      return state.dealType;
     },
   },
   mutations: {
@@ -93,7 +111,6 @@ const store = new Vuex.Store({
       payload.forEach(function (ele) {
         list.push({ text: ele.gugunName, value: ele.gugunCode });
       });
-      console.log(list);
       state.gugunOptions = list;
       state.gugun = "0";
     },
@@ -123,8 +140,21 @@ const store = new Vuex.Store({
     [Constant.SET_MAX_AMOUNT](state, payload) {
       state.maxAmount = payload;
     },
-    [Constant.SET_APT](state, payload) {
+    [Constant.SET_HOUSE](state, payload) {
       state.aptResult = payload;
+      state.isOk = true;
+      state.isDetailResultOpen = false;
+    },
+    [Constant.SET_APT_DEAL](state, payload) {
+      state.aptDeal = payload;
+      state.isDetailResultOpen = true;
+    },
+    [Constant.SET_HOUSE_TYPE](state, payload) {
+      console.log(payload);
+      state.houseType = payload;
+    },
+    [Constant.SET_DEAL_TYPE](state, payload) {
+      state.dealType = payload;
     },
 
     setArticles(state, payload) {
@@ -153,17 +183,24 @@ const store = new Vuex.Store({
     },
     [Constant.GET_DONG_OPTIONS](context, payload) {
       return http.get(`/map/dong?gugun=${payload}`).then(({ data }) => {
-        console.log(data);
         context.commit(Constant.SET_DONG_OPTIONS, data);
       });
     },
-    [Constant.GET_APT](context, payload) {
+    [Constant.GET_HOUSE](context, payload) {
       return http
         .get(
-          `/map/apt?dong=${payload.dong}&minArea=${payload.minArea}&maxArea=${payload.maxArea}&minAmount=${payload.minAmount}&maxAmount=${payload.maxAmount}`
+          `/map/${context.state.dealType}/${context.state.houseType}?dong=${payload.dong}&minArea=${payload.minArea}&maxArea=${payload.maxArea}&minAmount=${payload.minAmount}&maxAmount=${payload.maxAmount}`
         )
         .then(({ data }) => {
-          context.commit(Constant.SET_APT, data);
+          context.commit(Constant.SET_HOUSE, data);
+        });
+    },
+    [Constant.GET_APT_DEAL](context, payload) {
+      console.log(payload);
+      return http
+        .get(`/deal/${context.state.houseType}?aptCode=${payload.aptCode}`)
+        .then(({ data }) => {
+          context.commit(Constant.SET_APT_DEAL, data);
         });
     },
 
