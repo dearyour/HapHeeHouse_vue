@@ -12,7 +12,7 @@
             <b-table striped hover :items="items"></b-table
           ></b-tab>
           <b-tab title="전체 매매 현황">
-            <div style="overflow: scroll; height: 363px">
+            <div style="overflow: scroll; height: 400px">
               <div v-for="(history, index) in aptDeal" :key="index">
                 <div>{{ history.dealYear }}.{{ history.dealMonth }}.{{ history.dealDay }}</div>
                 <div v-if="dealType === `deal`">

@@ -11,141 +11,98 @@ export default {
   data() {
     return {
       map: null,
-      infowindow: null,
-      markers: [],
+      bounds: null,
     };
   },
   mounted() {
-    if (window.kakao && window.kakao.maps) {
-      this.initMap();
-    } else {
-      const script = document.createElement("script");
-      /*global kakao*/
-      script.onload = () => kakao.maps.load(this.initMap);
-      script.src =
-        "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=2d21dcba471c972f7b405f5f6aac4135";
-      document.head.appendChild(script);
-    }
+    window.kakao && window.kakao.maps ? this.initMap() : this.addScript();
   },
   watch: {
-    isOk() {
-      console.log(this.aptResult);
-      this.displayMarkers();
+    places() {
+      this.initMap();
     },
   },
   computed: {
     places() {
-      console.log("aptResult");
       return this.$store.getters.aptResult;
     },
   },
   methods: {
     initMap() {
-      const container = document.getElementById("map");
-      const options = {
-        center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
-        level: 3, // 지도의 확대 레벨
-      };
-      this.map = new kakao.maps.Map(container, options);
-      const markerPosition = new kakao.maps.LatLng(35.19656853772262, 129.0807270648317);
+      var container = document.getElementById("map");
+      var options = { center: new kakao.maps.LatLng(37.56641, 126.977967), level: 10 };
+      this.map = new kakao.maps.Map(container, options); //마커추가하려면 객체를 아래와 같이 하나 만든다.
 
-      const marker = new kakao.maps.Marker({
-        position: markerPosition,
-      });
+      var marker = new kakao.maps.Marker({ position: this.map.getCenter() });
       marker.setMap(this.map);
+      this.makeMarkerData();
     },
-    displayMarkers() {
-      var fragment = document.createDocumentFragment();
-      var bounds = new kakao.maps.LatLngBounds();
+    addScript() {
+      const script = document.createElement("script");
 
-      this.removeMarker();
-
-      for (var i = 0; i < this.places.length; i++) {
-        var placePosition = new kakao.maps.LatLng(this.places[i].lat, this.places[i].lng);
-        var marker = this.addMarker(placePosition, i);
-        var itemEl = this.getListItem(i, this.places[i]); // 검색 결과 항목 Element를 생성합니다
-
-        bounds.extend(placePosition);
-
-        (function (marker, title, code, place) {
-          kakao.maps.event.addListener(marker, "click", function () {
-            this.displayInfowindow(marker, title, place);
-            console.log(title + " " + code);
-          });
-
-          itemEl.onmouseover = function () {
-            this.displayInfowindow(marker, title);
-          };
-        })(marker, this.places[i].aptName, this.places[i].aptCode, this.places[i]);
-
-        fragment.appendChild(itemEl);
-      }
-
-      this.map.setBounds(bounds);
+      /* global kakao */
+      script.onload = () => kakao.maps.load(this.initMap);
+      script.src =
+        "http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=2d21dcba471c972f7b405f5f6aac4135";
+      document.head.appendChild(script);
     },
-    removeMarker() {
-      for (var i = 0; i < this.markers.length; i++) {
-        this.markers[i].setMap(null);
-      }
-      this.markers = [];
-    },
-    getListItem(index, place) {
-      var el = document.createElement("li");
-      var itemStr = `
-                <span class="markerbg marker_${index + 1}></span>
-                <div class="info"><h5>${place.aptName}</h5> <button>관심등록</button>
-                <span>${place.sidoName} ${place.gugunName} ${place.dongName} ${place.jibun}</span>
-            `;
-      el.innerHTML = itemStr;
-      el.className = "item";
-
-      return el;
-    },
-    //검색 결과 목록과 마커를 표출하는 함수입니다
-    addMarker(position, idx) {
-      var imageSrc =
-          "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png", // 마커 이미지 url, 스프라이트 이미지를 씁니다
-        imageSize = new kakao.maps.Size(36, 37), // 마커 이미지의 크기
-        imgOptions = {
-          spriteSize: new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
-          spriteOrigin: new kakao.maps.Point(0, idx * 46 + 10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
-          offset: new kakao.maps.Point(13, 37), // 마커 좌표에 일치시킬 이미지 내에서의 좌표
-        },
-        markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions),
-        marker = new kakao.maps.Marker({
-          position: position, // 마커의 위치
-          image: markerImage,
+    makeMarkerData() {
+      var positions = [];
+      console.log(this.places);
+      for (let i = 0; i < this.places.length; i++) {
+        positions.push({
+          title: this.places[i].aptName,
+          latlng: new kakao.maps.LatLng(
+            parseFloat(this.places[i].lat),
+            parseFloat(this.places[i].lng)
+          ),
         });
+      }
+      console.log(positions);
+      // 마커 이미지의 이미지 주소입니다
+      var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
 
-      marker.setMap(this.map); // 지도 위에 마커를 표출합니다
-      this.markers.push(marker); // 배열에 생성된 마커를 추가합니다
+      for (var i = 0; i < positions.length; i++) {
+        // 마커 이미지의 이미지 크기 입니다
+        var imageSize = new kakao.maps.Size(24, 35);
 
-      return marker;
+        // 마커 이미지를 생성합니다
+        var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+
+        // 마커를 생성합니다
+        new kakao.maps.Marker({
+          map: this.map, // 마커를 표시할 지도
+          position: positions[i].latlng, // 마커를 표시할 위치
+          title: positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+          image: markerImage, // 마커 이미지
+        });
+      }
     },
-    displayInfowindow() {
-      if (this.infowindow && this.infowindow.getMap()) {
-        //이미 생성한 인포윈도우가 있기 때문에 지도 중심좌표를 인포윈도우 좌표로 이동시킨다.
-        this.map.setCenter(this.infowindow.getPosition());
-        return;
+    makeBounds() {
+      var points = [];
+      console.log(this.places);
+      for (let i = 0; i < this.places.length; i++) {
+        points.push(
+          new kakao.maps.LatLng(parseFloat(this.places[i].lat), parseFloat(this.places[i].lng))
+        );
       }
 
-      var iwContent = '<div style="padding:5px;">Hello World!</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-        iwPosition = new kakao.maps.LatLng(33.450701, 126.570667), //인포윈도우 표시 위치입니다
-        iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+      // 지도를 재설정할 범위정보를 가지고 있을 LatLngBounds 객체를 생성합니다
+      this.bounds = new kakao.maps.LatLngBounds();
 
-      this.infowindow = new kakao.maps.InfoWindow({
-        map: this.map, // 인포윈도우가 표시될 지도
-        position: iwPosition,
-        content: iwContent,
-        removable: iwRemoveable,
-      });
+      var i, marker;
+      for (i = 0; i < points.length; i++) {
+        // 배열의 좌표들이 잘 보이게 마커를 지도에 추가합니다
+        marker = new kakao.maps.Marker({ position: points[i] });
+        marker.setMap(this.map);
 
-      this.map.setCenter(iwPosition);
-    },
-    removeAllChildNods(el) {
-      while (el.hasChildNodes()) {
-        el.removeChild(el.lastChild);
+        // LatLngBounds 객체에 좌표를 추가합니다
+        this.bounds.extend(points[i]);
+        this.setBounds();
       }
+    },
+    setBounds() {
+      this.map.setBounds(this.bounds);
     },
   },
 };

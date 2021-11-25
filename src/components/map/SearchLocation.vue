@@ -72,11 +72,11 @@
         </b-row>
       </b-col>
     </b-row>
-    <b-row>
+    <b-row class="text-center" align-h="center">
       <b-form-radio-group
         v-model="dealType"
         :options="options"
-        class="mb-3"
+        class="m-3"
         value-field="item"
         text-field="name"
         disabled-field="notEnabled"
