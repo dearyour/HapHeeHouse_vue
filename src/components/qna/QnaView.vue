@@ -25,8 +25,10 @@
     <b-row class="mb-1">
       <b-col>
         <b-card
-          :header-html="`<h3>${article.articleno}.
-          ${article.subject} [${article.hit}]</h3><div><h6>${article.userid}</div><div>${article.regtime}</h6></div>`"
+          :header-html="`<h3>No_${article.articleno}_ _ _ _ _ _ _
+             ${article.subject}_ _ _ _ _ _ _조회수 : ${article.hit}</h3>
+             <div><h5>${article.userid}</div>
+             <div>${article.regtime}</h5></div>`"
           class="mb-2"
           border-variant="dark"
           no-body

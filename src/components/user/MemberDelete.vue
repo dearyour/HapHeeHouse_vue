@@ -47,6 +47,8 @@ export default {
         }
         alert(msg);
         // 현재 route를 /list로 변경.
+        this.$store.commit("SET_IS_LOGIN", false);
+        this.$store.commit("SET_IS_LOGIN_ERROR", true);
         this.$router.push({ name: "SignIn" });
       });
   },

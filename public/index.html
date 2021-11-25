@@ -8,6 +8,12 @@
     <title><%= htmlWebpackPlugin.options.title %></title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
     <script src="@/assets/js/scripts.js"></script>
+    
+    <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
+    <script>
+      Kakao.init('0ff97e105e24889bc347cdc83044eacc');
+      console.log(Kakao.isInitialized());
+    </script>
   </head>
   <body>
     <noscript>

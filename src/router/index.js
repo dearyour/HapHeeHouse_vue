@@ -16,6 +16,7 @@ import QnaWrite from "@/components/qna/QnaWrite.vue";
 import QnaView from "@/components/qna/QnaView.vue";
 import QnaUpdate from "@/components/qna/QnaUpdate.vue";
 import QnaDelete from "@/components/qna/QnaDelete.vue";
+import Community from "@/components/Community.vue";
 
 import DetailView from "@/views/DetailView.vue";
 
@@ -46,6 +47,11 @@ const routes = [
     path: "/",
     name: "Map",
     component: Map,
+  },
+  {
+    path: "/community",
+    name: "Community",
+    component: Community,
   },
   {
     path: "/user",
@@ -128,6 +134,7 @@ const routes = [
       {
         path: "list",
         name: "QnaList",
+        beforeEnter: onlyAuthUser,
         component: QnaList,
       },
       {
