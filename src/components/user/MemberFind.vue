@@ -90,7 +90,7 @@ export default {
         .then(({ data }) => {
           if (data === 1) {
             alert("아이디 찾기에 성공하였습니다.");
-            console.log(data);
+            console.log(data.userInfo.userid);
             this.moveLogin();
           } else {
             alert("아이디를 찾을 수 없습니다.");

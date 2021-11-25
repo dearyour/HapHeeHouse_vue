@@ -25,9 +25,9 @@
                 ></b-nav-item
               >
               <b-nav-item href="#link-1" @click="confirm"
-                ><router-link :to="{ name: 'Board' }" class="link"
+                ><router-link :to="{ name: 'chat' }" class="link"
                   ><b-icon icon="journal" font-scale="1"></b-icon>
-                  게시판</router-link
+                  대화</router-link
                 ></b-nav-item
               >
               <b-nav-item href="#link-1" @click="confirm"
